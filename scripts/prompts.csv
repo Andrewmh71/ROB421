@@ -1,0 +1,21 @@
+﻿Prompt,Text,Sentiment,AWS % of Negative or Positive,Google Score (1 being very positive to -1 being very negative),Google Magnitude: indicates the overall strength of emotion 
+Phrase_1.wav," ""You seem nice! Press a button to say hi!""",Positive,0.97907877,0.597000003,1.284000039
+Phrase_2.wav,"""I hate this silence! press the button for a joke!""",Negative,0.948450327,-0.32100001,1.544999957
+Phrase_3.wav,"""You seem fun! Push a button for a joke!""",Positive,0.975757539,0.726000011,1.73300004
+Phrase_4.wav,"""These jokes are terrible. Press the button to hear one.""",Negative,0.996910036,-0.412,1.031000018
+Phrase_5.wav,"""Let's be happy! Push the button for a laugh.""",Positive,0.939981461,0.870999992,1.822000027
+Phrase_6.wav,"""You're ignoring me! push the button!""",Negative,0.939812958,-0.307000011,1.235000014
+Phrase_7.wav," ""I'm excited to meet you! Push the button to say hi.""",Positive,0.976941407,0.465000004,0.986000001
+Phrase_8.wav,"""You look very bored. Push the button.""",Negative,0.982284188,-0.411000013,0.957000017
+Phrase_9.wav,"""I'm very happy to see you today! press a button!""",Positive,0.974763155,0.824000001,1.773000002
+Phrase_10.wav,"""I feel very lonely! Push a button!""",Negative,0.978191316,-0.268000007,1.279000044
+Phrase_11.wav,"""You are awesome. Push a button to have fun!""",Positive,0.999294043,0.921000004,1.924999952
+Phrase_12.wav,"""I'm an idiotic robot. Will you press the button for me?""",Negative,0.982409358,-0.386999995,0.912
+Phrase_13.wav,"""Hey, you seem lovely. Press a button for a laugh.""",Positive,0.966100276,0.811999977,1.746000051
+Phrase_14.wav,"""I will be disappointed if you don't press this button!""",Negative,0.962253869,-0.828000009,1.812999964
+Phrase_15.wav,"""I love making people laugh. Press a button.""",Positive,0.988355517,0.476000011,1.008999944
+Phrase_16.wav,"""I hate that we're not friends. Push the button to say hi.""",Negative,0.888458848,-0.391000003,0.985000014
+Phrase_17.wav,"""These jokes are so good. Push a button to hear one.""",Positive,0.99452883,0.467999995,1.046000004
+Phrase_18.wav,"""Stop this instant! push a button!""",Negative,0.879255354,-0.078000002,1.792000055
+Phrase_19.wav,"""You look very clever. Come press this button for me.""",Positive,0.929048121,0.479999989,1.016000032
+Phrase_20.wav,"""I'm the worst comedian. Push the button to see me fail.""",Negative,0.973076105,-0.541000009,1.256000042

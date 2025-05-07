@@ -1,0 +1,6 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "SN74HC126N")(type "KiCad")(uri "${KIPRJMOD}/SN74HC126N/2024-08-16_19-04-10.kicad_sym")(options "")(descr ""))
+  (lib (name "PR24-5V-900-1A")(type "Legacy")(uri "${KIPRJMOD}/PR24-5V-900-1A/PR24-5V-900-1A.lib")(options "")(descr ""))
+  (lib (name "MEGA_PRO_EMBED_CH340G___ATMEGA2560")(type "KiCad")(uri "${KIPRJMOD}/MEGA_PRO_EMBED_CH340G___ATMEGA2560/MEGA_PRO_EMBED_CH340G___ATMEGA2560.kicad_sym")(options "")(descr ""))
+)

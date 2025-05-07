@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+cNeoEyes	KEYWORD1
+NeoEyes 	KEYWORD1
+Emote       KEYWORD1
+StandardEmote KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+setExpression KEYWORD2
+setNeutral KEYWORD2
+setRight KEYWORD2
+setLeft KEYWORD2
+setUp KEYWORD2
+setDown KEYWORD2
+setHappy KEYWORD2
+setSad KEYWORD2
+setAngry KEYWORD2
+setConfused KEYWORD2
+setClosed KEYWORD2
+setSleepy KEYWORD2
+setDead KEYWORD2
+setOff KEYWORD2
+blink KEYWORD2
+setBrightness KEYWORD2
+
+######################################
+# Constants (LITERAL1)
+#######################################
+_NLEDS	LITERAL1
+

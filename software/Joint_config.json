@@ -1,0 +1,151 @@
+{
+    "JointConfig": [
+        {
+          "JointName": "LeftChest",
+          "JointID": 8,
+          "HomeAngle": 115,
+          "MinAngle": 30,
+          "MaxAngle": 180
+        },
+        {
+          "JointName": "LeftShoulder",
+          "JointID": 9,
+          "HomeAngle": 180,
+          "MinAngle": 30,
+          "MaxAngle": 190
+        },
+        {
+          "JointName": "LeftBicep",
+          "JointID": 10,
+          "HomeAngle": 115,
+          "MinAngle": 20,
+          "MaxAngle": 180
+        },
+        {
+          "JointName": "LeftElbow",
+          "JointID": 11,
+          "HomeAngle": 105,
+          "MinAngle": 60,
+          "MaxAngle": 180
+        },
+        {
+          "JointName": "LeftGripper",
+          "JointID": 21,
+          "HomeAngle": 15,
+          "MinAngle": 15,
+          "MaxAngle": 100
+        },
+        {
+          "JointName": "LeftHip",
+          "JointID": 15,
+          "HomeAngle": 96,
+          "MinAngle": 10,
+          "MaxAngle": 96
+        },
+        {
+          "JointName": "LeftKnee",
+          "JointID": 16,
+          "HomeAngle": 80,
+          "MinAngle": 0,
+          "MaxAngle": 85
+        },
+        {
+          "JointName": "LeftAnkle",
+          "JointID": 17,
+          "HomeAngle": 90,
+          "MinAngle": 55,
+          "MaxAngle": 120
+        },
+        {
+          "JointName": "RightChest",
+          "JointID": 4,
+          "HomeAngle": 135,
+          "MinAngle": 60,
+          "MaxAngle": 180
+        },
+        {
+          "JointName": "RightShoulder",
+          "JointID": 5,
+          "HomeAngle": 80,
+          "MinAngle": 75,
+          "MaxAngle": 240
+        },
+        {
+          "JointName": "RightBicep",
+          "JointID": 6,
+          "HomeAngle": 115,
+          "MinAngle": 115,
+          "MaxAngle": 180
+        },
+        {
+          "JointName": "RightElbow",
+          "JointID": 7,
+          "HomeAngle": 90,
+          "MinAngle": 20,
+          "MaxAngle": 115
+        },
+        {
+          "JointName": "RightGripper",
+          "JointID": 20,
+          "HomeAngle": 15,
+          "MinAngle": 15,
+          "MaxAngle": 100
+        },
+        {
+          "JointName": "RightHip",
+          "JointID": 12,
+          "HomeAngle": 84,
+          "MinAngle": 84,
+          "MaxAngle": 170
+        },
+        {
+          "JointName": "RightKnee",
+          "JointID": 13,
+          "HomeAngle": 90,
+          "MinAngle": 90,
+          "MaxAngle": 180
+        },
+        {
+          "JointName": "RightAnkle",
+          "JointID": 14,
+          "HomeAngle": 80,
+          "MinAngle": 50,
+          "MaxAngle": 120
+        },
+        {
+          "JointName": "HeadNod",
+          "JointID": 2,
+          "HomeAngle": 125,
+          "MinAngle": 110,
+          "MaxAngle": 155
+        },
+        {
+          "JointName": "HeadTurn",
+          "JointID": 3,
+          "HomeAngle": 120,
+          "MinAngle": 70,
+          "MaxAngle": 160
+        },
+        {
+          "JointName": "HeadTilt",
+          "JointID": 1,
+          "HomeAngle": 125,
+          "MinAngle": 100,
+          "MaxAngle": 145
+        },
+        {
+          "JointName": "TorsoBow",
+          "JointID": 19,
+          "HomeAngle": 125,
+          "MinAngle": 100,
+          "MaxAngle": 150
+        },
+        {
+          "JointName": "TorsoTilt",
+          "JointID": 18,
+          "HomeAngle": 115,
+          "MinAngle": 80,
+          "MaxAngle": 160
+        }
+      ]
+}

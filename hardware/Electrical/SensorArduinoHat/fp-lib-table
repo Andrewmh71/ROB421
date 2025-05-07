@@ -1,0 +1,7 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Arduino_MountingHole")(type "KiCad")(uri "${KICAD7_TEMPLATE_DIR}/Arduino_Mega/Arduino_MountingHole.pretty")(options "")(descr ""))
+  (lib (name "CD4050BE")(type "KiCad")(uri "${KIPRJMOD}/CD4050BE")(options "")(descr ""))
+  (lib (name "CD74HC14E")(type "KiCad")(uri "${KIPRJMOD}/CD74HC14E/KiCADv6/footprints.pretty")(options "")(descr ""))
+  (lib (name "SN74AHC86N")(type "KiCad")(uri "${KIPRJMOD}/SN74AHC86N/KiCADv6/footprints.pretty")(options "")(descr ""))
+)

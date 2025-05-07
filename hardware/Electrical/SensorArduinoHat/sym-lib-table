@@ -1,0 +1,6 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "CD4050BE")(type "KiCad")(uri "${KIPRJMOD}/CD4050BE/2024-12-23_21-40-38.kicad_sym")(options "")(descr ""))
+  (lib (name "CD74HC14E")(type "KiCad")(uri "${KIPRJMOD}/CD74HC14E/KiCADv6/CD74HC14E.kicad_sym")(options "")(descr ""))
+  (lib (name "SN74AHC86N")(type "KiCad")(uri "${KIPRJMOD}/SN74AHC86N/KiCADv6/SN74AHC86N.kicad_sym")(options "")(descr ""))
+)
