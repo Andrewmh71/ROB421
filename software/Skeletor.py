@@ -12,8 +12,8 @@ cap = cv2.VideoCapture(0)  # 0 is usually the default webcam
 with mp_pose.Pose(static_image_mode=False,
                   model_complexity=1,
                   enable_segmentation=False,
-                  min_detection_confidence=0.5,
-                  min_tracking_confidence=0.5) as pose:
+                  min_detection_confidence=0.9,
+                  min_tracking_confidence=0.9) as pose:
     
     while cap.isOpened():
         ret, frame = cap.read()
