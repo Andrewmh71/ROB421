@@ -87,24 +87,27 @@ while True:
             left_angle = (left_angle + 2 * np.pi) % (2 * np.pi)
             right_angle = (right_angle + 2 * np.pi) % (2 * np.pi)
 
-            # Print angles in degrees
-            print(f"Left shoulder angle: {np.rad2deg(left_angle):.2f}°")
-            print(f"Right shoulder angle: {np.rad2deg(right_angle):.2f}°")
-
+            
             # Convert angles to servo positions
 
             # Left shouler (30 - 195 degrees)
+            print(f"Left shoulder angle: {np.rad2deg(left_angle):.2f}°")
             left_shoulder_angle = 290 - int(np.rad2deg(left_angle))
+            if(left_shoulder_angle < 30 or left_shoulder_angle > 195):
+                print('Left Shoulder Would Collide')
             left_shoulder_angle = np.clip(left_shoulder_angle, 30, 195)  # Ensure within servo limits
-
+            
             # Right shoulder (70 - 240 degrees)
+            print(f"Right shoulder angle: {np.rad2deg(right_angle):.2f}°")
             right_shoulder_angle = int(np.rad2deg(right_angle)) - 23
+            if(right_shoulder_angle < 60 or right_shoulder_angle > 240):
+                print('Right Shoulder Would Collide')
             right_shoulder_angle = np.clip(right_shoulder_angle, 70, 240)
-
+  
             print(f"Left shoulder servo position: {left_shoulder_angle}")
             print(f"Right shoulder servo position: {right_shoulder_angle}")
-
-    cv2.imshow('Pose Tracking', frame)
+    
+    cv2.imshow('Pose Tracker', frame)
     i += 1
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
