@@ -45,7 +45,7 @@
         {
           "JointName": "LeftKnee",
           "JointID": 16,
-          "HomeAngle": 80,
+          "HomeAngle": 75,
           "MinAngle": 0,
           "MaxAngle": 85
         },
@@ -59,8 +59,8 @@
         {
           "JointName": "RightChest",
           "JointID": 4,
-          "HomeAngle": 135,
-          "MinAngle": 60,
+          "HomeAngle": 160,
+          "MinAngle": 155,
           "MaxAngle": 180
         },
         {
