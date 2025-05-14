@@ -1,6 +1,11 @@
 import mediapipe as mp
 import cv2
 import numpy as np
+from read_json import JamieControl
+
+control = JamieControl()
+control.initialize_serial_connection()
+control.load_joint_config('Joint_config.json')
 
 # Initialize MediaPipe Pose
 mp_drawing = mp.solutions.drawing_utils
@@ -73,7 +78,7 @@ while True:
         landmarks_2d = np.array(landmarks_2d)
 
         # Print a landmark every 20 frames
-        if i % 30 == 0:
+        if i % 100 == 0:
             # Print the angle between left and right shoulders, and their respective elbows
             left_shoulder = landmarks_2d[mp_pose.PoseLandmark.LEFT_SHOULDER.value]
             right_shoulder = landmarks_2d[mp_pose.PoseLandmark.RIGHT_SHOULDER.value]
@@ -144,6 +149,10 @@ while True:
             print(f"Right elbow servo position: {right_elbow_angle_servo}")
             print(f"Left shoulder servo position: {left_shoulder_angle_servo}")
             print(f"Right shoulder servo position: {right_shoulder_angle_servo}")
+
+            control.send_joint_command([9, 5, 11, 7], 
+                                       [left_shoulder_angle_servo, left_elbow_angle_servo,
+                                        right_shoulder_angle_servo, right_elbow_angle_servo], 1)
     
     cv2.imshow('Pose Tracker', frame)
     i += 1
@@ -151,5 +160,6 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+control.close_connection()
 cap.release()
 cv2.destroyAllWindows()

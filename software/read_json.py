@@ -88,10 +88,9 @@
 #                     joint_angles.append(joint["Angle"])
 #                 self.send_joint_command(joint_ids, joint_angles, joint_time)
             
-#             time.sleep(keyframe["WaitTime"] / 1000)
-
+#     time.sleep(keyframe["WaitTime"] / 1000)
 #     def get_joint_id(self, joint_name):
-#         return self.joint_map.get(joint_name, 0)
+#     return self.joint_map.get(joint_name, 0)
 import time
 import serial
 import json
@@ -101,8 +100,8 @@ class JamieControl:
     def __init__(self, 
                  arduino_port='/dev/ttyUSB0', 
                  baud_rate=115200,
-                 joint_config_file='Joint_config.json',
-                 emote_file='Emote.json',
+                 joint_config_file='software/Joint_config.json',
+                 emote_file='software/Emote.json',
                  audio_folder='audio',
                  starting_voice='Matt',
                  audio_file_encoding='.mp3'):

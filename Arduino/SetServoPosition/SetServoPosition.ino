@@ -3,9 +3,9 @@
 
 int numMotors = 1;
 // Update the ID to match the specific servo you want to move
-int motorIDs[] = {16};
+int motorIDs[] = {8};
 // Set the position in degrees (from 0 to 240) that you want the servo to move to
-int motorPositions[] = {80};
+int motorPositions[] = {115};
 
 void setup() {
   // begin serial communication with the pc

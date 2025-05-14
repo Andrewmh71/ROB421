@@ -2,7 +2,7 @@
 #include "SerialServo.h"
 
 // Change this to the ID value you want on the servo, and run the code.
-int newID = 20;
+int newID = 8;
 
 void setup() {
   // begin serial communication with the pc
