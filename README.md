@@ -4,14 +4,19 @@ The Social Animated Mechanical Interlocutor (SAMI) robot is based on the [Aster]
 ## High Level System Capabilities
 
 ### Robot Capabilities
-Using 1 or 2 cameras in order to pose matching and copy shown movement in all 3 coordinate directions.
+Using 1 or 2 cameras in order to pose matching and copy shown movement in all 3 coordinate directions when compared to the standard 2 directions
+Use DeepFace Facial recognition to isolate authorized users and copy the movements of only those authorized users.
 
 ### Captions/Speakers/Video/Microphone
 Current camera model for project is XXXXXX
 Currently uses hooked up computers speakers for sound and audio
 
 ### Utilities/etc:
-- 
+-  3D tracking
+-  Accurate Angle and servo determination
+  - move human like bending of the arms, biceps and shoulders should not bend in non human ways when copying
+-  Safe and reasonable servo movment
+-  collision prediction and prevention
 
 
 
