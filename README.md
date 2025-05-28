@@ -1,14 +1,16 @@
-# Social Animated Mechanical Interlocutor (SAMI) Robot Project: Mirror Masters
-The Social Animated Mechanical Interlocutor (SAMI) robot is based on the [Aster](https://www.thingiverse.com/thing:3992150) robot, which is a modified [Poppy](https://www.thingiverse.com/thing:2280067) robot that used MG996R servo motors instead of the much more expensive dynamixels. The SAMI robot has been modified to use the HiWonder HTS serial bus servo motor series in addition to implementing additional features.
+# Project Overview:
+  Project Mirror Master is a project designed and created by students at Oregon State University for Applied Robotics (ROB 421) that allows the user to hook up to a Social Animated Mechanical Interlocutor (SAMI) robot and then be able to have the robot mirror all movements that the user would make.
 
-## High Level System Capabilities
+## High Level System Overview
 
 ### Robot Capabilities
-Using 1 or 2 cameras in order to pose matching and copy shown movement in all 3 coordinate directions when compared to the standard 2 directions
-Use DeepFace Facial recognition to isolate authorized users and copy the movements of only those authorized users.
+- Using 1 or 2 cameras in order to pose matching and copy shown movement in all 3 coordinate directions when compared to the standard 2 directions
+- Use DeepFace Facial recognition to isolate and recognize authorized users and copy the movements of only those authorized users.
+- MediaPipe to capture the skeleton pose matching
 
 ### Captions/Speakers/Video/Microphone
-Current camera model for project is XXXXXX
+
+Current camera model for project is Logitech c923E
 Currently uses hooked up computers speakers for sound and audio
 
 ### Utilities/etc:
@@ -18,10 +20,9 @@ Currently uses hooked up computers speakers for sound and audio
 -  Safe and reasonable servo movment
 -  collision prediction and prevention
 
-
-
-
-
+###System Requirements
+- Must be on Python ver. 3.11
+  - one of the few versions that would work with mediapipe and DeepFace
 
 
 
