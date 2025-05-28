@@ -1,4 +1,4 @@
-# Project Overview:
+# Project Overview: Mirror Master
   Project Mirror Master is a project designed and created by students at Oregon State University for Applied Robotics (ROB 421) that allows the user to hook up to a Social Animated Mechanical Interlocutor (SAMI) robot and then be able to have the robot mirror all movements that the user would make.
 
 ## High Level System Overview
