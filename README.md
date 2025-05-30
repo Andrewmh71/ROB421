@@ -27,16 +27,11 @@ Currently uses hooked up computers speakers for sound and audio
 - Must be on Python ver. 3.11
   - one of the few versions that would work with mediapipe and DeepFace
 -Python Module Versions:
-    -mediapipe: 0.10.21
-    -opencv: 4.11.0.86
-    -numpy: 1.26.4
+  -mediapipe: 0.10.21
+  -opencv: 4.11.0.86
+  -numpy: 1.26.4
 
-## Components/Packages/How TF do I organize this???
-Mechanical
-Electrical
-Arduino Code
-C Libraries
-JSON behavior files
+
 Audio files + caption text
 C# testing/development UI
 3D model files
