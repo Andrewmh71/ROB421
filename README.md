@@ -26,13 +26,7 @@ Currently uses hooked up computers speakers for sound and audio
 ### System Requirements
 - Must be on Python ver. 3.11
   - one of the few versions that would work with mediapipe and DeepFace
--Python Module Versions:
-  -mediapipe: 0.10.21
-  -opencv: 4.11.0.86
-  -numpy: 1.26.4
-
-
-Audio files + caption text
-C# testing/development UI
-3D model files
-URDF model
+- Python Module Version:
+  - mediapipe: 0.10.21
+  - numpy: 1.26.4
+  - opencv: 4.11.0.86
