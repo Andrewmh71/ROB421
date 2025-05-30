@@ -19,14 +19,17 @@ Currently uses hooked up computers speakers for sound and audio
 -  3D tracking
 -  Accurate Angle and servo determination
   - move human like bending of the arms, biceps and shoulders should not bend in non human ways when copying
--  Safe and reasonable servo movment
+-  Safe and reasonable servo movement
 -  Collision prediction and prevention
+  
 
 ###System Requirements
 - Must be on Python ver. 3.11
   - one of the few versions that would work with mediapipe and DeepFace
-
-
+-Python Module Versions:
+      -mediapipe: 0.10.21
+      -opencv: 4.11.0.86
+      -numpy: 1.26.4
 
 ## Components/Packages/How TF do I organize this???
 Mechanical
