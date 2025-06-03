@@ -1,8 +1,17 @@
 # Project Overview: Mirror Master
 
-# Table of Contents
+## Table of Contents
 
-[Link Text](#General Robot Facts).
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Basic Example](#basic-example)
+  - [Advanced Example](#advanced-example)
+- [Configuration](#configuration)
+- [API Reference](#api-reference)
+- [Contributing](#contributing)
+- [License](#license)
 
 
 
@@ -22,14 +31,14 @@
 - Calculates servo angles based off the skeleton to match the targets movements and send them to the robot for it to replicate
 - Utilizes up to 21 servos to replicate human joints and allow the robot to replicate human motion
 
-# Installation  
+# Installation
 - 
   
 ## Captions/Speakers/Video/Microphone
 - Current camera model for project is Logitech c923E
 - Currently uses hooked up computers speakers for sound and audio
 
-### Utilities/etc:
+### configuration
 -  3D tracking
 -  Accurate Angle and servo determination
   - move human like bending of the arms, biceps and shoulders should not bend in non human ways when copying
