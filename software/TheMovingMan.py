@@ -1,112 +1,89 @@
-import cv2
-import mediapipe as mp
 import math
-import json
+import random
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
 
-# Mediapipe setup
-mp_pose = mp.solutions.pose
-mp_pose2 = mp.solutions.pose
-pose = mp_pose.Pose()
-cap = cv2.VideoCapture(0)
+left_shoulder = (0,0,0)
+right_shoulder = (0,0,0)
 
-mp_drawing = mp.solutions.drawing_utils
-with mp_pose2.Pose(static_image_mode=False,
-                  model_complexity=1,
-                  enable_segmentation=False,
-                  min_detection_confidence=0.9,
-                  min_tracking_confidence=0.9) as pose2:
-    def calculate_angle(a, b, c):
-        """Calculate angle between three points in 3D."""
-        def vec(p1, p2):
-            return [p2[i] - p1[i] for i in range(3)]
+# Convert (x, y, z) to spherical with elevation as phi
+def cartesian_to_spherical(x, y, z):
+    r = math.sqrt(x**2 + y**2 + z**2)
+    theta = math.atan2(z, x)
+    phi = math.asin(z / r) if r != 0 else 0
+    return r, math.degrees(theta), math.degrees(phi)
 
-        v1 = vec(b, a)
-        v2 = vec(b, c)
+# Generate a random 3D point within given bounds
+def generate_random_coords(n=1):
+    return [(random.uniform(0, 1), random.uniform(0, 1), random.uniform(0, 1)) for _ in range(n)]
 
-        dot_product = sum(v1[i] * v2[i] for i in range(3))
-        norm1 = math.sqrt(sum(v1[i] ** 2 for i in range(3)))
-        norm2 = math.sqrt(sum(v2[i] ** 2 for i in range(3)))
-        
-        if norm1 * norm2 == 0:
-            return 0.0
 
-        angle = math.acos(dot_product / (norm1 * norm2))
-        return math.degrees(angle)
+# Generate body points
+left_elbow = np.array(generate_random_coords(1)[0])
+right_elbow = np.array(generate_random_coords(1)[0])
+left_wrist_actual = np.array(generate_random_coords(1)[0])
+right_wrist_actual= np.array(generate_random_coords(1)[0])
+left_wrist = np.array(left_wrist_actual-left_elbow)  # relative to elbow
+right_wrist = np.array(right_wrist_actual-right_elbow)  # relative to elbow
 
-    def get_point(landmark, shape):
-        return [
-            landmark.x * shape[1],
-            landmark.y * shape[0],
-            landmark.z * shape[1]
-        ]
+def elbow_angle(shoulder, elbow, wrist):
+    a = shoulder - elbow
+    b = wrist - elbow
+    cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+    return np.arccos(np.clip(cos_theta, -1.0, 1.0))  # radians
 
-    i = 0
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            print("Ignoring empty camera frame.")
-            continue
+# Print angles
+r, theta, phi = cartesian_to_spherical(*left_elbow)
+print(f"Left Elbow: x={left_elbow[0]:.3f}, y={left_elbow[1]:.3f}, z={left_elbow[2]:.3f} -> Left Shoulder θ={theta:.2f}°, Left Chest φ={phi:.2f}°")
 
-            # Convert the BGR frame to RGB
-        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        image.flags.writeable = False  # For performance
-            
-            # Process the image and detect pose
-        results = pose2.process(image)
+r, theta, phi = cartesian_to_spherical(*right_elbow)
+print(f"Right Elbow: x={right_elbow[0]:.3f}, y={right_elbow[1]:.3f}, z={right_elbow[2]:.3f} -> Right Shoulder θ={theta:.2f}°, Right Chest φ={phi:.2f}°")
 
-            # Draw the pose annotation on the image
-        image.flags.writeable = True
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+r, theta, phi = cartesian_to_spherical(*left_wrist)
+print(f"Left Wrist: x={left_wrist[0]:.3f}, y={left_wrist[1]:.3f}, z={left_wrist[2]:.3f} -> Left Bicep Rotation θ={theta:.2f}°, Left Elbow φ={math.degrees(elbow_angle(left_shoulder,left_elbow,left_wrist_actual)):.2f}°")
 
-        image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = pose.process(image_rgb)
+r, theta, phi = cartesian_to_spherical(*right_wrist)
+print(f"Right Wrist: x={right_wrist[0]:.3f}, y={right_wrist[1]:.3f}, z={right_wrist[2]:.3f} -> Right Bicep Rotation θ={theta:.2f}°, Right Elbow φ={math.degrees(elbow_angle(right_shoulder,right_elbow,right_wrist_actual)):.2f}°")
 
-        if results.pose_landmarks:
-            lm = results.pose_landmarks.landmark
-            shape = frame.shape
+# Plot body segments
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
 
-            # Get 3D coordinates for relevant joints
-            leftShoulder = get_point(lm[mp_pose.PoseLandmark.LEFT_SHOULDER], shape)
-            leftElbow = get_point(lm[mp_pose.PoseLandmark.LEFT_ELBOW], shape)
-            leftWrist = get_point(lm[mp_pose.PoseLandmark.LEFT_WRIST], shape)
+# Plot origin (shoulders)
+ax.scatter(0, 0, 0, c='black', s=50, label='Shoulders (origin)')
 
-            rightShoulder = get_point(lm[mp_pose.PoseLandmark.RIGHT_SHOULDER], shape)
-            rightElbow = get_point(lm[mp_pose.PoseLandmark.RIGHT_ELBOW], shape)
-            rightWrist = get_point(lm[mp_pose.PoseLandmark.RIGHT_WRIST], shape)
+# Plot and connect Left Arm
+ax.plot([0, left_elbow[0]], [0, left_elbow[1]], [0, left_elbow[2]], c='blue', label='Left Upper Arm')
+ax.plot([left_elbow[0], left_elbow[0] + left_wrist[0]],
+        [left_elbow[1], left_elbow[1] + left_wrist[1]],
+        [left_elbow[2], left_elbow[2] + left_wrist[2]],
+        c='cyan', label='Left Forearm')
 
-            # Calculate joint angles
-            leftElbow_angle = calculate_angle(leftShoulder, leftElbow, leftWrist)
-            leftShoulder_angle = calculate_angle([leftShoulder[0], leftShoulder[1] - 100, leftShoulder[2]], leftShoulder, leftElbow)  # Approx vertical vector
-            leftBicep_angle = calculate_angle(leftShoulder, leftElbow, leftWrist) 
+# Plot and connect Right Arm
+ax.plot([0, right_elbow[0]], [0, right_elbow[1]], [0, right_elbow[2]], c='red', label='Right Upper Arm')
+ax.plot([right_elbow[0], right_elbow[0] + right_wrist[0]],
+        [right_elbow[1], right_elbow[1] + right_wrist[1]],
+        [right_elbow[2], right_elbow[2] + right_wrist[2]],
+        c='orange', label='Right Forearm')
 
-            rightElbow_angle = calculate_angle(rightShoulder, rightElbow, rightWrist)
-            rightShoulder_angle = calculate_angle([rightShoulder[0], rightShoulder[1] - 100, rightShoulder[2]], rightShoulder, rightElbow)  
-            rightBicep_angle = calculate_angle(rightShoulder, rightElbow, rightWrist)
+# Joint markers
+ax.scatter(*left_elbow, c='blue')
+ax.scatter(left_elbow[0] + left_wrist[0], left_elbow[1] + left_wrist[1], left_elbow[2] + left_wrist[2], c='cyan')
+ax.scatter(*right_elbow, c='red')
+ax.scatter(right_elbow[0] + right_wrist[0], right_elbow[1] + right_wrist[1], right_elbow[2] + right_wrist[2], c='orange')
 
-            # Create JSON-like command
-            robot_command = {
-                "JointAngles": [
-                    {"Joint": "LeftShoulder", "Angle": round(leftShoulder_angle, 1)},
-                    {"Joint": "LeftBicep", "Angle": round(leftBicep_angle, 1)},
-                    {"Joint": "LeftElbow", "Angle": round(leftElbow_angle, 1)},
-                    {"Joint": "RightShoulder", "Angle": round(rightShoulder_angle, 1)},
-                    {"Joint": "RightBicep", "Angle": round(rightBicep_angle, 1)},
-                    {"Joint": "RightElbow", "Angle": round(rightElbow_angle, 1)}
-                ]
-            }
+# Axis labels
+ax.set_xlabel('X (left-right)')
+ax.set_ylabel('Y (up-down)')
+ax.set_zlabel('Z (forward-back)')
+ax.set_title("Arm Simulation in Custom 3D Coordinate System")
+ax.legend()
+ax.view_init(elev=90, azim=-90)
+ax.text(left_elbow[0], left_elbow[1], left_elbow[2], 
+        f"{math.degrees(elbow_angle(left_shoulder,left_elbow,left_wrist_actual)):.1f}°", color='red', fontsize=10)
 
-            if i % 40 == 0:
-                print(json.dumps(robot_command, indent=2))
-        mp_drawing.draw_landmarks(
-                    image,
-                    results.pose_landmarks,
-                    mp_pose.POSE_CONNECTIONS,
-                    mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2),
-                    mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2))
-        cv2.imshow("Tracking", frame)
-        i += 1
-        if cv2.waitKey(5) & 0xFF == 27:
-            break
+ax.text(right_elbow[0], right_elbow[1], right_elbow[2], 
+        f"{math.degrees(elbow_angle(right_shoulder,right_elbow,right_wrist_actual)):.1f}°", color='red', fontsize=10)
+plt.show()
 
-    cap.release()
-    cv2.destroyAllWindows()
