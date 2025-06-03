@@ -16,9 +16,6 @@
 
 
 # Introduction
-
-
-
 - Project Mirror Master is a project designed and created by students at Oregon State University for Applied Robotics (ROB 421) that would allow the user to hook up to a Social Animated Mechanical Interlocutor (SAMI) robot and then be able to have the robot mirror all movements that the user would make.
 - This repository contains all relevant documentation and visual images needed to transform the SAMI robot into Project Mirror Master
 
@@ -42,14 +39,14 @@
 - Current camera model for project is Logitech c923E
 - Currently uses hooked up computers speakers for sound and audio
 
-### configuration
+### Configuration
 -  3D tracking
 -  Accurate Angle and servo determination
   - move human like bending of the arms, biceps and shoulders should not bend in non human ways when copying
 -  Safe and reasonable servo movement
 -  Collision prediction and prevention
   
-# contributing
+# Contributing
 
 ### System Requirements
 - Must be on Python ver. 3.11
@@ -61,4 +58,4 @@
 
 
 
-# license
+# License
