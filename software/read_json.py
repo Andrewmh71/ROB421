@@ -98,7 +98,7 @@ from audio_manager import AudioManager
 
 class JamieControl:
     def __init__(self, 
-                 arduino_port='COM5', 
+                 arduino_port='COM3', 
                  baud_rate=115200,
                  joint_config_file='Joint_config.json',
                  emote_file='Emote.json',
