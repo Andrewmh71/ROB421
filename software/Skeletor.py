@@ -8,6 +8,7 @@ import time
 from mediapipe.framework.formats import image_format_pb2
 from mediapipe.tasks.python.vision.core.vision_task_running_mode import VisionTaskRunningMode
 import math
+import face_tracker
 
 GHUM_LANDMARK_NAMES = [
     "NOSE", "LEFT_EYE_INNER", "LEFT_EYE", "LEFT_EYE_OUTER",
@@ -27,6 +28,7 @@ try:
     control = JamieControl()
     control.initialize_serial_connection()
     control.load_joint_config('Joint_config.json')
+    connected = True
 except Exception as e:
     print(f"Error connecting to Arduino: {e}")
     connected = False
@@ -155,6 +157,8 @@ if not cap.isOpened():
     raise RuntimeError("Failed to open video source.")
 timestamp = 0
 
+ft = face_tracker.FaceTracker(cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
 while cap.isOpened():
     success, frame = cap.read()
     if not success:
@@ -172,8 +176,13 @@ while cap.isOpened():
     # Wrap in MediaPipe Image
     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
 
-    # Send to detector
-    detector.detect_async(mp_image, timestamp)
+    if connected and i % 60 == 0:
+        angles = ft.get_neck_angles(frame)
+        print("Sending neck command", angles)
+        control.send_joint_command([3, 2], [angles[0], angles[1]], 1)
+
+    # # Send to detector
+    # detector.detect_async(mp_image, timestamp)
 
     # Optional display
     cv2.imshow('Camera', frame)
