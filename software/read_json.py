@@ -1,6 +1,6 @@
 # import time
 # import serial
-# import json
+# mport json
 
 # class JamieControl:
 #     def __init__(self, 
@@ -98,10 +98,10 @@ from audio_manager import AudioManager
 
 class JamieControl:
     def __init__(self, 
-                 arduino_port='/dev/ttyUSB0', 
+                 arduino_port='COM5', 
                  baud_rate=115200,
-                 joint_config_file='software/Joint_config.json',
-                 emote_file='software/Emote.json',
+                 joint_config_file='Joint_config.json',
+                 emote_file='Emote.json',
                  audio_folder='audio',
                  starting_voice='Matt',
                  audio_file_encoding='.mp3'):
@@ -132,7 +132,8 @@ class JamieControl:
             time.sleep(2)
             print("Serial connection established.")
             packet = [0x3C, 0x50, 0x01, 0x45, 0x3E]
-            self.ser.write(bytearray(packet))
+
+
             print("Sent packet:", bytearray(packet))
             if self.ser.in_waiting > 0:
                 msg = self.ser.readline().decode()
@@ -147,8 +148,11 @@ class JamieControl:
         for jid, angle in zip(joint_ids, joint_angles):
             packet.extend([jid, angle])
         packet.append(0x3E)
-        self.ser.write(bytearray(packet))
-        print("Sent joint command:", bytearray(packet))
+        if self.ser:
+            self.ser.write(bytearray(packet))
+        else:
+            print("Serial not initialized. Cannot send command.")
+
 
     def send_emote(self, emote_id):
         packet = [0x3C, 0x45, emote_id, 0x3E]

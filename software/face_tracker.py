@@ -1,7 +1,6 @@
 # face_tracker.py
 import cv2
 import mediapipe as mp
-import time
 
 class FaceTracker:
     def __init__(self, frame_width, frame_height):
@@ -11,12 +10,21 @@ class FaceTracker:
         self.frame_height = frame_height
         self.center_x = frame_width // 2
         self.center_y = frame_height // 2
+
+        # Head Turn (X) - ID 3
+        self.servo_x = 120
+        self.home_x = 120
+        self.min_x = 70
+        self.max_x = 160
+
+        # Head Nod (Y) - ID 2
+        self.servo_y = 125
+        self.home_y = 125
+        self.min_y = 110
+        self.max_y = 155
+
         self.lock_width = 125
         self.lock_height = 125
-        self.servo_x = 125
-        self.servo_y = 120
-        self.home_x = 125
-        self.home_y = 120
         self.missing_counter = 0
         self.missing_threshold = 30
 
@@ -51,14 +59,14 @@ class FaceTracker:
             dy = cy - self.center_y
 
             if abs(dx) > self.lock_width // 2:
-                mapped_x = 180 - self.map_range(cx, 0, self.frame_width, 180, 0)
+                mapped_x = self.map_range(cx, 0, self.frame_width, self.max_x, self.min_x)
                 self.servo_x = self.smooth_step(mapped_x, self.servo_x)
-                self.servo_x = self.constrain(self.servo_x, 0, 180)
+                self.servo_x = self.constrain(self.servo_x, self.min_x, self.max_x)
 
             if abs(dy) > self.lock_height // 2:
-                mapped_y = 180 - self.map_range(cy, 0, self.frame_height, 180, 0)
+                mapped_y = self.map_range(cy, 0, self.frame_height, self.max_y, self.min_y)
                 self.servo_y = self.smooth_step(mapped_y, self.servo_y)
-                self.servo_y = self.constrain(self.servo_y, 0, 180)
+                self.servo_y = self.constrain(self.servo_y, self.min_y, self.max_y)
 
             self.missing_counter = 0
         else:
@@ -69,9 +77,3 @@ class FaceTracker:
                 self.missing_counter = 0
 
         return int(self.servo_x), int(self.servo_y)
-
-#--------------------------- for skeletor puposes -------------------------------------
-
-# Get neck servo angles from face tracker
-#neck_x, neck_y = neck_tracker.get_neck_angles(frame)
-#control.send_joint_command([0, 1], [neck_x, neck_y], 1)  # Adjust IDs for neck servos

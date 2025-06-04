@@ -1,0 +1,131 @@
+{
+    "Name": "Stretch",
+    "Keyframes": [
+        {
+            "HasEmote": "True",
+            "HasAudio": "True",
+            "AudioClip": "bowl",
+            "HasJoints": "True",
+            "Expression": "Neutral",
+            "WaitTime": 1500,
+            "JointMoveTime": 1,
+            "JointAngles": [
+                {
+                    "Joint": "LeftShoulder",
+                    "Angle": 90
+                },
+                {
+                    "Joint": "RightShoulder",
+                    "Angle": 180
+                },
+                {
+                    "Joint": "LeftBicep",
+                    "Angle": 25
+                },
+                {
+                    "Joint": "RightBicep",
+                    "Angle": 175
+                }
+
+                
+            ]
+        },
+        {
+            "HasEmote": "True",
+            "HasAudio": "False",
+            "HasJoints": "True",
+            "Expression": "Sleepy",
+            "WaitTime": 1500,
+            "JointMoveTime": 1,
+            "JointAngles": [
+                
+                {
+                    "Joint": "LeftElbow",
+                    "Angle": 175
+                },
+                {
+                    "Joint": "RightElbow",
+                    "Angle": 100
+                },
+                {
+                    "Joint": "RightShoulder",
+                    "Angle": 225
+                },
+                {
+                    "Joint": "LeftShoulder",
+                    "Angle": 10
+                },
+                {
+                    "Joint": "TorsoTilt",
+                    "Angle": 125
+                }
+
+                
+            ]
+        },
+        {
+            "HasEmote": "True",
+            "HasAudio": "False",
+            "HasJoints": "True",
+            "Expression": "Sleepy",
+            "WaitTime": 1500,
+            "JointMoveTime": 1,
+            "JointAngles": [
+                
+                {
+                    "Joint": "LeftElbow",
+                    "Angle": 90
+                },
+                {
+                    "Joint": "RightElbow",
+                    "Angle": 105
+                },
+                {
+                    "Joint": "LeftShoulder",
+                    "Angle": 90
+                },
+                {
+                    "Joint": "RightShoulder",
+                    "Angle": 180
+                },
+                {
+                    "Joint": "TorsoTilt",
+                    "Angle": 115
+                }
+
+                
+            ]
+        },
+        {
+            "HasEmote": "True",
+            "HasAudio": "False",
+            "HasJoints": "True",
+            "Expression": "Happy",
+            "WaitTime": 1500,
+            "JointMoveTime": 1,
+            "JointAngles": [
+                
+                {
+                    "Joint": "LeftBicep",
+                    "Angle": 115
+                },
+                {
+                    "Joint": "RightBicep",
+                    "Angle": 115
+                },
+                {
+                    "Joint": "LeftShoulder",
+                    "Angle": 180
+                },
+                {
+                    "Joint": "RightShoulder",
+                    "Angle": 85
+                }
+                
+
+                
+            ]
+        }
+        
+    ]
+}
