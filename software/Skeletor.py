@@ -43,6 +43,7 @@ except Exception as e:
 
 if connected: time.sleep(2)  # Wait for servos to go to config positions
 
+<<<<<<< Updated upstream
 # # Initialize MediaPipe Pose
 # mp_drawing = mp.solutions.drawing_utils
 # mp_pose = mp.solutions.pose
@@ -89,96 +90,30 @@ if connected: time.sleep(2)  # Wait for servos to go to config positions
 # print("Camera matrix:\n", camera_matrix)
 
 import numpy as np
+=======
+def zero(toZero, Zero):
+    toZero[0] = toZero[0]-Zero[0]
+    toZero[1] = toZero[1]-Zero[1]
+    toZero[2] = toZero[2]-Zero[2]
+    return toZero
+
+# def cartesian_to_spherical(x, y, z):
+#     r = math.sqrt(x**2 + y**2 + z**2)
+#     theta = math.atan2(z, x)
+#     phi = math.asin(z / r) if r != 0 else 0
+#     return [r, math.degrees(theta), math.degrees(phi)]
+
+def cartesian_to_spherical(joint):
+    r = math.sqrt(joint[0]**2 + joint[1]**2 + joint[2]**2)
+    theta = math.atan2(joint[2], joint[1])
+    phi = math.asin(joint[2] / r) if r != 0 else 0
+    return [r, math.degrees(theta), math.degrees(phi)]
+>>>>>>> Stashed changes
 
 def elbow_angle(shoulder, elbow, wrist):
     a = shoulder - elbow
     b = wrist - elbow
     cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
-    return np.arccos(np.clip(cos_theta, -1.0, 1.0))  # radians
-
-def compute_ref_vector(shoulder, elbow, wrist):
-    axis = np.linalg.norm(elbow - shoulder)
-    raw = wrist - elbow
-    ref_proj = raw - np.dot(raw, axis) * axis
-    print(f"ref_proj: {ref_proj}")
-    return np.linalg.norm(ref_proj)
-
-def bicep_rotation(shoulder, elbow, wrist, reference=np.array([0, 0, -1])):
-    """
-    Computes the signed twist angle (in radians) of the forearm around the upper arm,
-    relative to a fixed reference direction in the orthogonal plane.
-
-    Parameters:
-        shoulder: np.array of shape (3,)
-        elbow: np.array of shape (3,)
-        wrist: np.array of shape (3,)
-        reference: np.array of shape (3,), default is negative Z (camera-facing)
-
-    Returns:
-        angle: float, twist angle in radians
-    """
-    # Vector from shoulder to elbow = upper arm
-    u = elbow - shoulder
-    u_norm = u / np.linalg.norm(u)  # This is the rotation axis
-
-    # Vector from elbow to wrist = forearm
-    f = wrist - elbow
-
-    # Project reference and forearm into plane orthogonal to upper arm
-    def project_onto_plane(v, normal):
-        return v - np.dot(v, normal) * normal
-
-    f_proj = project_onto_plane(f, u_norm)
-    r_proj = project_onto_plane(reference, u_norm)
-
-    # Normalize projections
-    f_proj_norm = np.linalg.norm(f_proj)
-    r_proj_norm = np.linalg.norm(r_proj)
-    if f_proj_norm < 1e-8 or r_proj_norm < 1e-8:
-        raise ValueError("Projection too small; vectors are nearly aligned with upper arm.")
-
-    f_unit = f_proj / f_proj_norm
-    r_unit = r_proj / r_proj_norm
-
-    # Signed angle from reference to forearm in plane
-    angle = np.arctan2(
-        np.dot(np.cross(r_unit, f_unit), u_norm),  # signed component
-        np.dot(r_unit, f_unit)                     # cosine of angle
-    )
-
-    return angle
-
-def shoulder_abduction(shoulder, elbow, hip):
-    arm_vec = elbow - shoulder
-    torso_vec = hip - shoulder
-
-    # Project arm_vec onto torso's left-right + up-down plane
-    # We'll assume camera is facing front, so forward (Z) is ignored
-    arm_proj = arm_vec.copy()
-    arm_proj[2] = 0  # zero out Z
-    torso_proj = torso_vec.copy()
-    torso_proj[2] = 0
-
-    arm_proj /= np.linalg.norm(arm_proj)
-    torso_proj /= np.linalg.norm(torso_proj)
-
-    cos_theta = np.dot(arm_proj, torso_proj)
-    return np.arccos(np.clip(cos_theta, -1.0, 1.0))  # radians
-
-def chest_flexion(shoulder, elbow, hip):
-    arm_vec = elbow - shoulder
-    torso_vec = hip - shoulder
-
-    # Project onto Y-Z plane (ignore left-right X)
-    arm_proj = arm_vec.copy()
-    arm_proj[0] = 0
-    torso_proj = torso_vec.copy()
-    torso_proj[0] = 0
-
-    arm_proj /= np.linalg.norm(arm_proj)
-    torso_proj /= np.linalg.norm(torso_proj)
-
-    cos_theta = np.dot(arm_proj, torso_proj)
     return np.arccos(np.clip(cos_theta, -1.0, 1.0))  # radians
 
 # Wait for biceps to rotate to positions before starting
@@ -194,9 +129,99 @@ first = True
 ref_vector = np.array([0, 0, 0])
 
 
+<<<<<<< Updated upstream
 while True:
     ret, frame = cap.read()
     if not ret:
+=======
+    landmarks = detection_results.pose_landmarks[0]
+    print("\n\n\n== GHUM Model Output (pose_landmarks) ==")
+
+    for idx, lm in enumerate(landmarks):
+        if lm.visibility > 0.85 and lm.presence > 0.4 and idx in [11, 12, 13, 14, 15, 16]:
+            joint = GHUM_LANDMARK_NAMES[idx]
+            print(f"{idx:2d}: {joint:20s} | x={lm.x:.3f}, y={lm.y:.3f}, z={lm.z:.3f} | "
+                f"vis={lm.visibility:.3f}, pres={lm.presence:.3f}")
+    
+    # Continue if shoulder, elbow, wrist or hip are not visible
+    if (landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].visibility < 0.8):
+        return
+    
+    print("Saw visible landmarks, processing...")
+
+    # Form appropriate numpy arrays
+    left_shoulder = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].x,
+                                landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].y,
+                                landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].z])
+    right_shoulder = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].x,
+                                landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].y,
+                                landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].z])
+    left_elbow = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].z])
+    right_elbow = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].z])
+    left_wrist = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].z])
+    right_wrist = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].z])
+    left_hip = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].z])
+    right_hip = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].z])
+
+    # if first:
+    #     ref_vector = compute_ref_vector(left_shoulder, left_elbow, left_wrist)
+    #     first = False
+    
+    # Calculate angles
+    left_elbow_angle = elbow_angle(left_shoulder, left_elbow, left_wrist)
+    right_elbow_angle = elbow_angle(right_shoulder, right_elbow, right_wrist)
+    
+    # Reference vector is the negative z-axis
+    # (towards camera is negative z)
+    left_shoulder_rot = cartesian_to_spherical(np.array(zero(left_elbow,left_shoulder)))
+    right_shoulder_rot = cartesian_to_spherical(np.array(zero(right_elbow,right_shoulder)))
+    
+    # Print angles
+    print(f"Left elbow angle: {np.rad2deg(left_elbow_angle):.2f}°")
+    print(f"Right elbow angle: {np.rad2deg(right_elbow_angle):.2f}°")
+    print(f"Left shoulder abduction: {left_shoulder_rot[1]:.2f}°")
+    print(f"Right shoulder abduction: {right_shoulder_rot[1]:.2f}°")
+    print(f"Left chest flexion: {left_shoulder_rot[2]:.2f}°")
+    print(f"Right chest flexion: {right_shoulder_rot[2]:.2f}°")
+
+# Set up mediapipe pose detection
+base_options = python.BaseOptions(model_asset_path="pose_landmarker_full.task")
+options = vision.PoseLandmarkerOptions(
+    base_options=base_options,
+    running_mode=VisionTaskRunningMode.LIVE_STREAM,
+    result_callback=process_landmarks
+)
+detector = vision.PoseLandmarker.create_from_options(options)
+
+cap = cv2.VideoCapture(0)
+if not cap.isOpened():
+    raise RuntimeError("Failed to open video source.")
+timestamp = 0
+
+while cap.isOpened():
+    success, frame = cap.read()
+    if not success:
+        print("Failed to read frame from camera. Exiting...")
+>>>>>>> Stashed changes
         break
 
     i += 1
