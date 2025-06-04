@@ -1,6 +1,8 @@
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
+from mediapipe.tasks import python
+from mediapipe.tasks.python import vision
 import cv2
 import numpy as np
 from read_json import JamieControl
@@ -8,6 +10,7 @@ import time
 from mediapipe.framework.formats import image_format_pb2
 from mediapipe.tasks.python.vision.core.vision_task_running_mode import VisionTaskRunningMode
 import math
+import face_tracker as face
 
 GHUM_LANDMARK_NAMES = [
     "NOSE", "LEFT_EYE_INNER", "LEFT_EYE", "LEFT_EYE_OUTER",
@@ -27,6 +30,7 @@ try:
     control = JamieControl()
     control.initialize_serial_connection()
     control.load_joint_config('Joint_config.json')
+    connected = True
 except Exception as e:
     print(f"Error connecting to Arduino: {e}")
     connected = False
@@ -66,6 +70,59 @@ if connected:
 # Video processing loop
 first = True
 ref_vector = np.array([0, 0, 0])
+i = 0
+
+def process_landmarks(detection_results, output_image, timestamp):
+    if i % 20 != 0:
+        return
+
+    landmarks = detection_results.pose_landmarks[0]
+    print("\n\n\n== GHUM Model Output (pose_landmarks) ==")
+
+    for idx, lm in enumerate(landmarks):
+        if lm.visibility > 0.85 and lm.presence > 0.4 and idx in [11, 12, 13, 14, 15, 16]:
+            joint = GHUM_LANDMARK_NAMES[idx]
+            print(f"{idx:2d}: {joint:20s} | x={lm.x:.3f}, y={lm.y:.3f}, z={lm.z:.3f} | "
+                f"vis={lm.visibility:.3f}, pres={lm.presence:.3f}")
+    
+    # Continue if shoulder, elbow, wrist or hip are not visible
+    if (landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].visibility < 0.8 or
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].visibility < 0.8):
+        return
+    
+    print("Saw visible landmarks, processing...")
+
+    # Form appropriate numpy arrays
+    left_shoulder = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].x,
+                                landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].y,
+                                landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].z])
+    right_shoulder = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].x,
+                                landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].y,
+                                landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].z])
+    left_elbow = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].z])
+    right_elbow = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].z])
+    left_wrist = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].z])
+    right_wrist = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].z])
+    left_hip = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].z])
+    right_hip = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].x,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].y,
+                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].z])
 i = 0
 
 def process_landmarks(detection_results, output_image, timestamp):

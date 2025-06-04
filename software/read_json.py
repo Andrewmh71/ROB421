@@ -98,7 +98,7 @@ from audio_manager import AudioManager
 
 class JamieControl:
     def __init__(self, 
-                 arduino_port='COM5', 
+                 arduino_port='COM3', 
                  baud_rate=115200,
                  joint_config_file='Joint_config.json',
                  emote_file='Emote.json',
@@ -149,6 +149,7 @@ class JamieControl:
             packet.extend([jid, angle])
         packet.append(0x3E)
         if self.ser:
+            print("Command sent")
             self.ser.write(bytearray(packet))
         else:
             print("Serial not initialized. Cannot send command.")
