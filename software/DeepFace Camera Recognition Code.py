@@ -54,7 +54,12 @@ def verify_user():
 
         if result["verified"]:
             print("✅ Access granted: Authorized user.")
-            #Set up run motion capture####################################################################################################################################
+            """with open('Skeletor.py', 'r') as file:
+                code = file.read()
+                exec(code)"""
+            with open('Facial_Expression.py', 'r') as files:
+                facialexpression = files.read()
+                exec(facialexpression)
         else:
             print("❌ Access denied: Unauthorized user.")
     except Exception as e:
