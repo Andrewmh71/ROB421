@@ -1,8 +1,6 @@
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from mediapipe.tasks import python
-from mediapipe.tasks.python import vision
 import cv2
 import numpy as np
 from read_json import JamieControl
@@ -24,6 +22,18 @@ GHUM_LANDMARK_NAMES = [
     "RIGHT_FOOT_INDEX"
 ]
 
+# Servo offsets
+LEFT_SHOULDER_OFFSET = 195
+RIGHT_SHOULDER_OFFSET = 70
+LEFT_ELBOW_OFFSET = 60
+RIGHT_ELBOW_OFFSET = 20
+LEFT_BICEP_OFFSET = 20
+RIGHT_BICEP_OFFSET = 180
+
+# Other globals
+KNEE_MIN_DIST = 0.1
+MIN_CONFIDENCE = 0.7
+
 # Initialize robot control
 connected = False
 try:
@@ -31,189 +41,153 @@ try:
     control.initialize_serial_connection()
     control.load_joint_config('Joint_config.json')
     connected = True
-    connected = True
 except Exception as e:
     print(f"Error connecting to Arduino: {e}")
     connected = False
 
-import numpy as np
+def angle_between(a, b, c):
+    """Returns interior angle ABC (in degrees), using x and y only."""
+    ba = a - b
+    bc = c - b
+    cos_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
+    return np.degrees(np.arccos(np.clip(cos_angle, -1.0, 1.0)))
 
-def zero(toZero, Zero):
-    toZero[0] = toZero[0]-Zero[0]
-    toZero[1] = toZero[1]-Zero[1]
-    toZero[2] = toZero[2]-Zero[2]
-    return toZero
+def apply_servo_offset(angle_deg, offset):
+    return angle_deg + offset
 
-# def cartesian_to_spherical(x, y, z):
-#     r = math.sqrt(x**2 + y**2 + z**2)
-#     theta = math.atan2(z, x)
-#     phi = math.asin(z / r) if r != 0 else 0
-#     return [r, math.degrees(theta), math.degrees(phi)]
-
-def cartesian_to_spherical(joint):
-    r = math.sqrt(joint[0]**2 + joint[1]**2 + joint[2]**2)
-    theta = math.atan2(joint[2], joint[1])
-    phi = math.asin(joint[2] / r) if r != 0 else 0
-    return [r, math.degrees(theta), math.degrees(phi)]
-
-def elbow_angle(shoulder, elbow, wrist):
-    a = shoulder - elbow
-    b = wrist - elbow
-    cos_theta = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
-    return np.arccos(np.clip(cos_theta, -1.0, 1.0))
+def apply_offset_inverse(angle_deg, offset):
+    """Apply the inverse of the servo offset."""
+    return offset - angle_deg
 
 # Wait for biceps to rotate to positions before starting
 if connected:
     control.send_joint_command([6, 10], [165, 35], 1)
+    time.sleep(2)
 
-    time.sleep(2) 
+left_wrist_below = False
+right_wrist_below = False
 
-# Video processing loop
-first = True
-ref_vector = np.array([0, 0, 0])
-i = 0
-
-def process_landmarks(detection_results, output_image, timestamp):
-    if i % 20 != 0:
+def process_landmarks(detection_results):
+    if not detection_results.pose_landmarks:
+        print("No pose landmarks detected.")
         return
-
     landmarks = detection_results.pose_landmarks[0]
-    print("\n\n\n== GHUM Model Output (pose_landmarks) ==")
 
-    for idx, lm in enumerate(landmarks):
-        if lm.visibility > 0.85 and lm.presence > 0.4 and idx in [11, 12, 13, 14, 15, 16]:
-            joint = GHUM_LANDMARK_NAMES[idx]
-            print(f"{idx:2d}: {joint:20s} | x={lm.x:.3f}, y={lm.y:.3f}, z={lm.z:.3f} | "
-                f"vis={lm.visibility:.3f}, pres={lm.presence:.3f}")
-    
-    # Continue if shoulder, elbow, wrist or hip are not visible
-    if (landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].visibility < 0.8):
-        return
-    
-    print("Saw visible landmarks, processing...")
+    required = ["LEFT_SHOULDER", "LEFT_ELBOW", "LEFT_WRIST", "LEFT_HIP",
+                "RIGHT_SHOULDER", "RIGHT_ELBOW", "RIGHT_WRIST", "RIGHT_HIP"]
 
-    # Form appropriate numpy arrays
-    left_shoulder = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].x,
-                                landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].y,
-                                landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].z])
-    right_shoulder = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].x,
-                                landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].y,
-                                landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].z])
-    left_elbow = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].z])
-    right_elbow = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].z])
-    left_wrist = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].z])
-    right_wrist = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].z])
-    left_hip = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].z])
-    right_hip = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].z])
-i = 0
+    # Extract 2D positions
+    ls = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].x,
+                   landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].y])
+    le = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].x,
+                   landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].y])
+    lw = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].x,
+                   landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].y])
+    lh = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].x,
+                   landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].y])
 
-def process_landmarks(detection_results, output_image, timestamp):
-    if i % 20 != 0:
-        return
+    rs = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].x,
+                   landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].y])
+    re = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].x,
+                   landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].y])
+    rw = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].x,
+                   landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].y])
+    rh = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].x,
+                   landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].y])
 
-    landmarks = detection_results.pose_landmarks[0]
-    print("\n\n\n== GHUM Model Output (pose_landmarks) ==")
+    command_joints = []
+    command_angles = []
 
-    for idx, lm in enumerate(landmarks):
-        if lm.visibility > 0.85 and lm.presence > 0.4 and idx in [11, 12, 13, 14, 15, 16]:
-            joint = GHUM_LANDMARK_NAMES[idx]
-            print(f"{idx:2d}: {joint:20s} | x={lm.x:.3f}, y={lm.y:.3f}, z={lm.z:.3f} | "
-                f"vis={lm.visibility:.3f}, pres={lm.presence:.3f}")
-    
-    # Continue if shoulder, elbow, wrist or hip are not visible
-    if (landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].visibility < 0.8 or
-        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].visibility < 0.8):
-        return
-    
-    print("Saw visible landmarks, processing...")
+    # LEFT SHOULDER
+    if landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].visibility > MIN_CONFIDENCE:
+        left_shoulder_angle = angle_between(lh, ls, le)
+        servo_angle = apply_offset_inverse(left_shoulder_angle, LEFT_SHOULDER_OFFSET)
+        command_joints.append(9)
+        command_angles.append(servo_angle)
 
-    # Form appropriate numpy arrays
-    left_shoulder = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].x,
-                                landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].y,
-                                landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].z])
-    right_shoulder = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].x,
-                                landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].y,
-                                landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].z])
-    left_elbow = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].z])
-    right_elbow = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].z])
-    left_wrist = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].z])
-    right_wrist = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].z])
-    left_hip = np.array([landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].z])
-    right_hip = np.array([landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].x,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].y,
-                            landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].z])
+        print(f"Left Shoulder Angle: {left_shoulder_angle:.2f}°")
+        print(f"Left Shoulder Servo Angle: {servo_angle:.2f}°")
+    
+    # RIGHT SHOULDER
+    if landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].visibility > MIN_CONFIDENCE:
+        right_shoulder_angle = angle_between(rh, rs, re)
+        servo_angle = apply_servo_offset(right_shoulder_angle, RIGHT_SHOULDER_OFFSET)
+        command_joints.append(5)
+        command_angles.append(servo_angle)
 
-    # if first:
-    #     ref_vector = compute_ref_vector(left_shoulder, left_elbow, left_wrist)
-    #     first = False
+        print(f"Right Shoulder Angle: {right_shoulder_angle:.2f}°")
+        print(f"Right Shoulder Servo Angle: {servo_angle:.2f}°")
+
+    # LEFT ELBOW
+    if landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_SHOULDER")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].visibility > MIN_CONFIDENCE:
+        left_elbow_angle = angle_between(ls, le, lw)
+        servo_angle = apply_servo_offset(left_elbow_angle, LEFT_ELBOW_OFFSET)
+        command_joints.append(11)
+        command_angles.append(servo_angle)
+
+        print(f"Left Elbow Angle: {left_elbow_angle:.2f}°")
+        print(f"Left Elbow Servo Angle: {servo_angle:.2f}°")
+        
+    # RIGHT ELBOW
+    if landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].visibility > MIN_CONFIDENCE:
+        right_elbow_angle = angle_between(rs, re, rw)
+        servo_angle = apply_servo_offset(right_elbow_angle, RIGHT_ELBOW_OFFSET)
+        command_joints.append(7)
+        command_angles.append(servo_angle)
+
+        print(f"Right Elbow Angle: {right_elbow_angle:.2f}°")
+        print(f"Right Elbow Servo Angle: {servo_angle:.2f}°")
+
+    global left_wrist_below, right_wrist_below
+    # LEFT BICEP
+    if landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].visibility > MIN_CONFIDENCE:
+        if left_wrist_below != lw[1] > le[1]:
+            print("Flipping left bicep")
+            left_wrist_below = lw[1] > le[1]
+            command_joints.append(10)
+            command_angles.append(LEFT_BICEP_OFFSET - 180 if left_wrist_below else LEFT_BICEP_OFFSET)
     
-    # Calculate angles
-    left_elbow_angle = elbow_angle(left_shoulder, left_elbow, left_wrist)
-    right_elbow_angle = elbow_angle(right_shoulder, right_elbow, right_wrist)
+    # RIGHT BICEP
+    if landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].visibility > MIN_CONFIDENCE and \
+        landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].visibility > MIN_CONFIDENCE:
+        if right_wrist_below != rw[1] > re[1]:
+            print("Flipping right bicep")
+            right_wrist_below = rw[1] > re[1]
+            command_joints.append(8)
+            command_angles.append(RIGHT_BICEP_OFFSET - 180 if right_wrist_below else RIGHT_BICEP_OFFSET)
+
+    # Send commands to robot
+    if connected and command_joints:
+        command_angles = [int(angle) for angle in command_angles]
+        print("Sending joint commands:", command_joints, command_angles)
+        control.send_joint_command(command_joints, command_angles, 1)
     
-    # Reference vector is the negative z-axis
-    # (towards camera is negative z)
-    left_shoulder_rot = cartesian_to_spherical(np.array(zero(left_elbow,left_shoulder)))
-    right_shoulder_rot = cartesian_to_spherical(np.array(zero(right_elbow,right_shoulder)))
-    
-    # Print angles
-    print(f"Left elbow angle: {np.rad2deg(left_elbow_angle):.2f}°")
-    print(f"Right elbow angle: {np.rad2deg(right_elbow_angle):.2f}°")
-    print(f"Left shoulder abduction: {left_shoulder_rot[1]:.2f}°")
-    print(f"Right shoulder abduction: {right_shoulder_rot[1]:.2f}°")
-    print(f"Left chest flexion: {left_shoulder_rot[2]:.2f}°")
-    print(f"Right chest flexion: {right_shoulder_rot[2]:.2f}°")
+    print("\n\n==========================================\n\n")
 
 # Set up mediapipe pose detection
 base_options = python.BaseOptions(model_asset_path="pose_landmarker_full.task")
 options = vision.PoseLandmarkerOptions(
     base_options=base_options,
-    running_mode=VisionTaskRunningMode.LIVE_STREAM,
-    result_callback=process_landmarks
+    running_mode=VisionTaskRunningMode.VIDEO
 )
 detector = vision.PoseLandmarker.create_from_options(options)
 
 cap = cv2.VideoCapture(0)
 if not cap.isOpened():
     raise RuntimeError("Failed to open video source.")
-timestamp = 0
 
 ft = face_tracker.FaceTracker(cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+i = 0
 
 while cap.isOpened():
     success, frame = cap.read()
@@ -222,25 +196,21 @@ while cap.isOpened():
         break
 
     i += 1
-    timestamp = int(time.time() * 1000)  # Current timestamp in milliseconds
+    timestamp = int(time.time() * 1000)
 
-    # Convert to RGB
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
     rgb_frame = np.ascontiguousarray(rgb_frame)
-
-    # Wrap in MediaPipe Image
     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
 
-    if connected and i % 60 == 0:
-        angles = ft.get_neck_angles(frame)
-        print("Sending neck command", angles)
-        control.send_joint_command([3, 2], [angles[0], angles[1]], 1)
+    detection_result = detector.detect_for_video(mp_image, timestamp)
+    if i % 60 == 0:
+        process_landmarks(detection_result)
 
-    # # Send to detector
-    # detector.detect_async(mp_image, timestamp)
+        if connected:
+            angles = ft.get_neck_angles(frame)
+            print("Sending neck command", angles)
+            control.send_joint_command([3, 2], [angles[0], angles[1]], 1)
 
-    # Optional display
     cv2.imshow('Camera', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
