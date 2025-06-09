@@ -18,7 +18,7 @@ GHUM_LANDMARK_NAMES = [
     "RIGHT_INDEX", "LEFT_THUMB", "RIGHT_THUMB", "LEFT_HIP",
     "RIGHT_HIP", "LEFT_KNEE", "RIGHT_KNEE", "LEFT_ANKLE",
     "RIGHT_ANKLE", "LEFT_HEEL", "RIGHT_HEEL", "LEFT_FOOT_INDEX",
-    "RIGHT_FOOT_INDEX"
+    "RIGHT_FOOT_INDEX"  
 ]
 
 # Initialize robot control
@@ -38,12 +38,6 @@ def zero(toZero, Zero):
     toZero[1] = toZero[1]-Zero[1]
     toZero[2] = toZero[2]-Zero[2]
     return toZero
-
-# def cartesian_to_spherical(x, y, z):
-#     r = math.sqrt(x**2 + y**2 + z**2)
-#     theta = math.atan2(z, x)
-#     phi = math.asin(z / r) if r != 0 else 0
-#     return [r, math.degrees(theta), math.degrees(phi)]
 
 def cartesian_to_spherical(joint):
     r = math.sqrt(joint[0]**2 + joint[1]**2 + joint[2]**2)
