@@ -23,12 +23,12 @@ GHUM_LANDMARK_NAMES = [
 ]
 
 # Servo offsets
-LEFT_SHOULDER_OFFSET = 195
-RIGHT_SHOULDER_OFFSET = 70
+LEFT_SHOULDER_OFFSET = 170
+RIGHT_SHOULDER_OFFSET = 100
 LEFT_ELBOW_OFFSET = 60
-RIGHT_ELBOW_OFFSET = 20
-LEFT_BICEP_OFFSET = 20
-RIGHT_BICEP_OFFSET = 180
+RIGHT_ELBOW_OFFSET = 150
+LEFT_BICEP_OFFSET = 40
+RIGHT_BICEP_OFFSET = 200
 
 # Other globals
 KNEE_MIN_DIST = 0.1
@@ -51,6 +51,12 @@ def angle_between(a, b, c):
     bc = c - b
     cos_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
     return np.degrees(np.arccos(np.clip(cos_angle, -1.0, 1.0)))
+
+def is_wrist_above(v_shoulder, v_elbow, v_wrist):
+    v = v_elbow - v_shoulder
+    w = v_wrist - v_shoulder
+    cross = v[0] * w[1] - v[1] * w[0]
+    return cross > 0
 
 def apply_servo_offset(angle_deg, offset):
     return angle_deg + offset
@@ -104,6 +110,7 @@ def process_landmarks(detection_results):
         landmarks[GHUM_LANDMARK_NAMES.index("LEFT_HIP")].visibility > MIN_CONFIDENCE:
         left_shoulder_angle = angle_between(lh, ls, le)
         servo_angle = apply_offset_inverse(left_shoulder_angle, LEFT_SHOULDER_OFFSET)
+        servo_angle = np.clip(servo_angle, 30, 190)
         command_joints.append(9)
         command_angles.append(servo_angle)
 
@@ -116,6 +123,7 @@ def process_landmarks(detection_results):
         landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_HIP")].visibility > MIN_CONFIDENCE:
         right_shoulder_angle = angle_between(rh, rs, re)
         servo_angle = apply_servo_offset(right_shoulder_angle, RIGHT_SHOULDER_OFFSET)
+        servo_angle = np.clip(servo_angle, 70, 240)
         command_joints.append(5)
         command_angles.append(servo_angle)
 
@@ -128,6 +136,7 @@ def process_landmarks(detection_results):
         landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].visibility > MIN_CONFIDENCE:
         left_elbow_angle = angle_between(ls, le, lw)
         servo_angle = apply_servo_offset(left_elbow_angle, LEFT_ELBOW_OFFSET)
+        servo_angle = np.clip(servo_angle, 20, 170)
         command_joints.append(11)
         command_angles.append(servo_angle)
 
@@ -139,37 +148,38 @@ def process_landmarks(detection_results):
         landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_SHOULDER")].visibility > MIN_CONFIDENCE and \
         landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].visibility > MIN_CONFIDENCE:
         right_elbow_angle = angle_between(rs, re, rw)
-        servo_angle = apply_servo_offset(right_elbow_angle, RIGHT_ELBOW_OFFSET)
+        servo_angle = apply_offset_inverse(right_elbow_angle, RIGHT_ELBOW_OFFSET)
+        servo_angle = np.clip(servo_angle, 20, 160)
         command_joints.append(7)
         command_angles.append(servo_angle)
 
         print(f"Right Elbow Angle: {right_elbow_angle:.2f}°")
         print(f"Right Elbow Servo Angle: {servo_angle:.2f}°")
 
-    global left_wrist_below, right_wrist_below
     # LEFT BICEP
     if landmarks[GHUM_LANDMARK_NAMES.index("LEFT_WRIST")].visibility > MIN_CONFIDENCE and \
         landmarks[GHUM_LANDMARK_NAMES.index("LEFT_ELBOW")].visibility > MIN_CONFIDENCE:
-        if left_wrist_below != lw[1] > le[1]:
-            print("Flipping left bicep")
-            left_wrist_below = lw[1] > le[1]
-            command_joints.append(10)
-            command_angles.append(LEFT_BICEP_OFFSET - 180 if left_wrist_below else LEFT_BICEP_OFFSET)
+        
+        left_wrist_below = is_wrist_above(ls, le, lw)
+
+        print("Left wrist below elbow:", left_wrist_below)
+        command_joints.append(10)
+        command_angles.append(LEFT_BICEP_OFFSET if left_wrist_below else LEFT_BICEP_OFFSET + 180)
     
     # RIGHT BICEP
     if landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_WRIST")].visibility > MIN_CONFIDENCE and \
         landmarks[GHUM_LANDMARK_NAMES.index("RIGHT_ELBOW")].visibility > MIN_CONFIDENCE:
-        if right_wrist_below != rw[1] > re[1]:
-            print("Flipping right bicep")
-            right_wrist_below = rw[1] > re[1]
-            command_joints.append(8)
-            command_angles.append(RIGHT_BICEP_OFFSET - 180 if right_wrist_below else RIGHT_BICEP_OFFSET)
+
+        right_wrist_below = rw[1] < re[1]
+        print("Right wrist below elbow:", right_wrist_below)
+        command_joints.append(6)
+        command_angles.append(RIGHT_BICEP_OFFSET if right_wrist_below else RIGHT_BICEP_OFFSET - 180)
 
     # Send commands to robot
     if connected and command_joints:
         command_angles = [int(angle) for angle in command_angles]
         print("Sending joint commands:", command_joints, command_angles)
-        control.send_joint_command(command_joints, command_angles, 1)
+        control.send_joint_command(command_joints, command_angles, 2)
     
     print("\n\n==========================================\n\n")
 
@@ -203,7 +213,7 @@ while cap.isOpened():
     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
 
     detection_result = detector.detect_for_video(mp_image, timestamp)
-    if i % 60 == 0:
+    if i % 120 == 0:
         process_landmarks(detection_result)
 
         if connected:
