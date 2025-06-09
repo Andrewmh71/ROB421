@@ -6,7 +6,7 @@ from read_json import JamieControl
 
 class JamieControlUI(JamieControl, QWidget):
     def __init__(self, 
-                 arduino_port='COM5', 
+                 arduino_port='COM3', 
                  baud_rate=115200,
                  joint_config_file='Joint_config.json',
                  behavior_folder='behaviors',
