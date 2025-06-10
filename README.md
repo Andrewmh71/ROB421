@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/5a34ff37-d233-40f3-ad7a-ddf4e7b25f38)# Project Overview: Mirror Master
+# Project Overview: Mirror Master
 
 ## Table of Contents
 
