@@ -37,9 +37,9 @@
   -
 -Conor Rozenberger's Artefacts:
   - Large Focus on 2D and later 3D Motion
-  Artifact 1) 2D skeleton pose estimation and collision detection and prevention
-  Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
-  Artifact 3) 3D pose matching and angle determination utilizing x, y, and z coordinates
+  Artifact 1.) 2D skeleton pose estimation and collision detection and prevention
+  Artifact 2.) Modified Json behavior file to allow robot to make "Show Sky" Gesture
+  Artifact 3.) 3D pose matching and angle determination utilizing x, y, and z coordinates
 
 -Daniel McVay's Artefacts:
   -
