@@ -22,6 +22,21 @@
 - [Add Initial video showing finished robot and movement]
 
 # Features
+## Supplemental Artefacts:
+- Miguel Garspa's Artefacts
+    -
+-Andrew Dillon's Artefacts:
+  _Focus of facial recognition aspects of the movement
+  1.) Isolates single user and only mirrors that user:
+  2.) Checks to see if it is an authorized user, only then it would copy movements
+  3.) would look register the emotion of the user and attempt to overwrite the current expression on the robot
+    
+-Andrew Hiser's Artefacts:
+  -
+-Connor Rozenberger's Artefacts:
+  -
+-Daniel McVay's Artefacts:
+  -
 
 ## General Robot Facts
 - Using 1/2 cameras to pose match and copy shown movement in all 3 coordinate directions when compared to the standard 2 directions
