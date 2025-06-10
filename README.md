@@ -31,15 +31,14 @@
   1.) Isolates single user and only mirrors that user:
   2.) Checks to see if it is an authorized user, only then it would copy movements
   3.) would look register the emotion of the user and attempt to overwrite the current expression on the robot
-  [add associated videos]
-    
+  [add associated videos]  
 - Andrew Hiser's Artefacts:
   -
- -Conor Rozenberger's Artefacts:
-   - Large Focus on 2D and later 3D Motion
-    -Artifact 1) 2D skeleton pose estimation and collision detection and prevention
-    -Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
-    -Artifact 3) 3D pose matching and angle determination utilizing x, y, and z coordinates
+- Conor Rozenberger's Artefacts:
+  - Large Focus on 2D and later 3D Motion
+  - Artifact 1) 2D skeleton pose estimation and collision detection and prevention
+  - Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
+  - Artifact 3) 3D pose matching and angle determination utilizing x, y, and z coordinates
 
 -Daniel McVay's Artefacts:
   -
