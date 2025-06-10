@@ -4,6 +4,8 @@ import trimesh
 from trimesh.transformations import rotation_matrix, translation_matrix
 import pyrender  # for nicer visualization
 
+#for future work contact 541 891 6043 "Daniel McVay"
+
 # Utility function to create a box collision object
 def create_box(size, transform=np.eye(4)):
     box = fcl.Box(*size)
@@ -121,22 +123,30 @@ def left_arm_check(chest,shoulder,bicep,elbow):
     transforms = []
     # Chest (rotates about Z)
     T = translation_matrix([0, 0, -base_z]) @ rotation_matrix(angles['chest'], [0, 0, 1])
+        #this section creates the stat link     This rotates the peice around the vector by "Chest" angle
     link1_T = T @ translation_matrix([0, 0, link_dims[0][2] *3 / 2 ])
+        #This creates the end of the link, and ^ centers the next start point
     transforms.append(link1_T)
 
     # Shoulder (rotates about X)
     T = T @ translation_matrix([0, 0, link_dims[0][2]]) @ rotation_matrix(angles['shoulder'], [1, 0, 0])
+    #this section creates the stat link     This rotates the peice around the vector by "shoulder" angle
     link2_T = T @ translation_matrix([0, 0, link_dims[1][2] / 2])
+        #This creates the end of the link, and ^ centers the next start point
     transforms.append(link2_T)
 
     # Bicep twist (rotates about Z)
     T = T @ translation_matrix([0, 0, link_dims[1][2]]) @ rotation_matrix(angles['bicep'], [0, 0, 1])
+    #this section creates the stat link     This rotates the peice around the vector by "bicep" angle
     link3_T = T @ translation_matrix([0, 0, link_dims[2][2] / 2])
+        #This creates the end of the link, and ^ centers the next start point
     transforms.append(link3_T)
 
     # Elbow pivot (rotates about Y)
     T = T @ translation_matrix([0, 0, link_dims[2][2]]) @ rotation_matrix(angles['elbow'], [0, 1, 0])
+    #this section creates the stat link     This rotates the peice around the vector by "elbow" angle
     link4_T = T @ translation_matrix([0, 0, link_dims[3][2] / 2])
+        #This creates the end of the link, and ^ centers the next start point
     transforms.append(link4_T)
 
     # Create collision objects
