@@ -1,4 +1,4 @@
-# Project Overview: Mirror Master
+![image](https://github.com/user-attachments/assets/5a34ff37-d233-40f3-ad7a-ddf4e7b25f38)# Project Overview: Mirror Master
 
 ## Table of Contents
 
@@ -39,8 +39,18 @@
   - Artifact 1) 2D skeleton pose estimation and collision detection and prevention
   - Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
   - Artifact 3) 3D pose matching and angle determination utilizing x, y, and z coordinates
+
 -Daniel McVay's Artefacts:
-  -
+  - Create collision detection for system to determine if a motion is safe to mirror
+  - Artifact 1) created code for identification of both shoulders and elbow to initialize system
+  - Artifact 2) created code that simulates the arms position and checks for the collision {image below}
+                ![image](https://github.com/user-attachments/assets/58ce8587-e067-4b8e-988d-685591d257e9)
+                ![image](https://github.com/user-attachments/assets/16954ae2-d7f7-4fcf-9910-324eebf09c6c)
+
+  - Artifact 3) Collision detection checks individually for left arm and right arm individually
+NOTES: Overall the code woorks to test and simulate positions using the Trimesh library, however, because we could not get 3d detection to work,
+       it would have been a waist time to try to implement that with minor affect, Instead we bound motions to prevent collisions.
+
 
 ## General Robot Facts
 - Using 1/2 cameras to pose match and copy shown movement in all 3 coordinate directions when compared to the standard 2 directions
