@@ -27,10 +27,10 @@
     -  Gimbal tracking of the head in order to track user if they step out of view
     -  [Add tracking video]
 - Andrew Dillon's Artefacts:
-  -Focus of facial recognition aspects of the movement
-  1.) Isolates single user and only mirrors that user:
-  2.) Checks to see if it is an authorized user, only then it would copy movements
-  3.) would look register the emotion of the user and attempt to overwrite the current expression on the robot
+  - Focus of facial recognition aspects of the movement
+  - Isolates single user and only mirrors that user:
+  - Checks to see if it is an authorized user, only then it would copy movements
+  - Would look register the emotion of the user and attempt to overwrite the current expression on the robot
   [add associated videos]  
 - Andrew Hiser's Artefacts:
   -
