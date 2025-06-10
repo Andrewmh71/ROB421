@@ -23,7 +23,7 @@
 
 # Features
 ## Supplemental Artefacts:
-- Miguel Garspa's Artefacts
+- Miguel Garcia's Artefacts
     -  Gimbal tracking of the head in order to track user if they step out of view
     -  [Add tracking video]
 - Andrew Dillon's Artefacts:
@@ -39,7 +39,6 @@
   - Artifact 1) 2D skeleton pose estimation and collision detection and prevention
   - Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
   - Artifact 3) 3D pose matching and angle determination utilizing x, y, and z coordinates
-
 -Daniel McVay's Artefacts:
   -
 
