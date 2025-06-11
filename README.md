@@ -28,17 +28,18 @@
     -  [Add tracking video]
 - Andrew Dillon's Artefacts:
   - Focus of facial recognition aspects of the movement
+  - 
   - Isolates single user and only mirrors that user:
   - Checks to see if it is an authorized user, only then it would copy movements
   - Would look register the emotion of the user and attempt to overwrite the current expression on the robot
   [add associated videos]  
-- Andrew Hiser's Artefacts:
-  -
-- Conor Rozenberger's Artefacts:
+
+- Conor Rozenberger's and Andrew Hiser's Artefacts:
   - Large Focus on 2D and later 3D Motion
   - Artifact 1) 2D skeleton pose estimation and collision detection and prevention
   - Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
   - Artifact 3) 3D pose matching and angle determination utilizing x, y, and z coordinates
+[Uploading ROB 421 Individual Artifact 1 video file (1).zip…]()
 
 -Daniel McVay's Artefacts:
   - Create collision detection for system to determine if a motion is safe to mirror
