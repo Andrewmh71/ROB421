@@ -47,7 +47,7 @@ https://github.com/user-attachments/assets/5335354e-1cad-4e65-9cfb-70e90b637bce
   - Artifact 1) 2D skeleton pose estimation and collision detection and prevention
   - Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
   - Artifact 3) 3D pose matching and angle determination utilizing x, y, and z coordinates
-        https://github.com/user-attachments/assets/0f409fa8-7e65-4dfb-aff2-d3c45caf36b4
+  - Video of TEST 3D motion angle determination: https://github.com/user-attachments/assets/0f409fa8-7e65-4dfb-aff2-d3c45caf36b4
   - Designed a headshell to mask a Logitech 923E camera to soften the appearance of the robot and camera [camerashellfinalfinalfinalfinalfinal.zip](https://github.com/user-attachments/files/20702064/camerashellfinalfinalfinalfinalfinal.zip)
     
 -Daniel McVay's Artefacts:
