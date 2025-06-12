@@ -16,7 +16,7 @@
 
 
 # Introduction
-- Project Mirror Master is a project designed and created by students at Oregon State University for Applied Robotics (ROB 421) that would allow the user to hook up to a Social Animated Mechanical Interlocutor (SAMI) robot and then be able to have the robot mirror all movements that the user would make.
+- Project Mirror Master is a project designed and created by engineering students at Oregon State University for Applied Robotics (ROB 421) that would allow the user to hook up to a Social Animated Mechanical Interlocutor (aka SAMI) robot and then be able to have the robot mirror all movements that the user would make.
 - This repository contains all relevant documentation and visual images needed to transform the SAMI robot into Project Mirror Master
 
 - [Add Initial video showing finished robot and movement]
@@ -26,20 +26,24 @@
 - Miguel Garcia's Artefacts
     -  Gimbal tracking of the head in order to track user if they step out of view
     -  [Add tracking video]
+
+https://github.com/user-attachments/assets/5335354e-1cad-4e65-9cfb-70e90b637bce
+
+
 - Andrew Dillon's Artefacts:
   - Focus of facial recognition aspects of the movement
   - 
   - Isolates single user and only mirrors that user:
   - Checks to see if it is an authorized user, only then it would copy movements
   - Would look register the emotion of the user and attempt to overwrite the current expression on the robot
-  [add associated videos]  
+  [add associated videos]  [ROB 421 Individual Artifact 1 video file (1).zip](https://github.com/user-attachments/files/20697781/ROB.421.Individual.Artifact.1.video.file.1.zip)
+
 
 - Conor Rozenberger's and Andrew Hiser's Artefacts:
   - Large Focus on 2D and later 3D Motion
   - Artifact 1) 2D skeleton pose estimation and collision detection and prevention
   - Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
   - Artifact 3) 3D pose matching and angle determination utilizing x, y, and z coordinates
-[Uploading ROB 421 Individual Artifact 1 video file (1).zip…]()
 
 -Daniel McVay's Artefacts:
   - Create collision detection for system to determine if a motion is safe to mirror
