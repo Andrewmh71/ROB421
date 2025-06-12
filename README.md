@@ -3,7 +3,10 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Features](#features)
+- [Reasoning](#reasoning)
+- [Beginning steps](#initial_test_videos)
+- [End Result](#Completed_Videos)
+- [Features & Artefacts](#features)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Basic Example in 2D](#basic-example)
@@ -11,18 +14,18 @@
 - [Configuration](#configuration)
 - [API Reference](#api-reference)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 
 
 # Introduction
-- Project Mirror Master is a project designed, and created by engineering students at Oregon State University for the Applied Robotics class (ROB 421), that would take a completely assembled and functioning Social Animated Mechanical Interlocutor (aka SAMI) robot currently used at oregon state for research, and would allow the user to install some modifications and a camera to allow the robot to be able to mirror the movements that would be performed right in front of it
+- Project Mirror Master is a project designed, and created by Andrew Dillon, Andrew Hiser, Miguel Garcia Garspa, Daniel McVay, and Connor Rosenberger, who car currently students at Oregon State University for the Applied Robotics class (ROB 421), that would take a completely assembled and functioning Social Animated Mechanical Interlocutor (aka SAMI) robot currently used at oregon state for research, and would allow the user to install some modifications and a camera to allow the robot to be able to mirror the movements that would be performed right in front of it
 - This repository contains all relevant documentation and visual images needed to transform the SAMI robot into Project: Mirror Master
 
 ## Reasoning:
 - We decided on attempting this project as we had already added a camera to our SAMI Robot and thought that it would be difficult and interesting to attempt to have the robot copy movements, which none of us hav ever done before. With our goal to get it to copy in 2, or even 3 dimensions. However our final Project: Mirror Master is only able to function in a 2 dimensional space.
 
-## Initial Test Videos
+## initial_test_videos
 - [Add Initial video showing finished robot and movement]
 - https://oregonstateuniversity-my.sharepoint.com/:v:/r/personal/rosencon_oregonstate_edu/Documents/Attachments/PXL_20250609_202339570.mp4?csf=1&web=1&e=T4nsdH&nav=eyJwbGF5YmFja09wdGlvbnMiOnt9LCJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbE1vZGUiOiJtaXMiLCJyZWZlcnJhbFZpZXciOiJwb3N0cm9sbC1jb3B5bGluayIsInJlZmVycmFsUGxheWJhY2tTZXNzaW9uSWQiOiI1NTdmMjE0YS04M2RjLTQwODEtYmFhNi04MGIxMzBiOTg1NDcifX0%3D
 - https://oregonstateuniversity-my.sharepoint.com/:v:/r/personal/rosencon_oregonstate_edu/Documents/Attachments/PXL_20250609_204853102.mp4?csf=1&web=1&e=03c3HS&nav=eyJwbGF5YmFja09wdGlvbnMiOnt9LCJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbE1vZGUiOiJtaXMiLCJyZWZlcnJhbFZpZXciOiJwb3N0cm9sbC1jb3B5bGluayIsInJlZmVycmFsUGxheWJhY2tTZXNzaW9uSWQiOiIzMjUwMjlkNy0zODQ1LTQxMDUtOTFkNi02ZWE5YjUxZGUyMjIifX0%3D
@@ -30,7 +33,7 @@
 - https://oregonstateuniversity-my.sharepoint.com/:v:/r/personal/rosencon_oregonstate_edu/Documents/Attachments/PXL_20250609_201230615.mp4?csf=1&web=1&e=I6WGn8&nav=eyJwbGF5YmFja09wdGlvbnMiOnt9LCJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbE1vZGUiOiJtaXMiLCJyZWZlcnJhbFZpZXciOiJwb3N0cm9sbC1jb3B5bGluayIsInJlZmVycmFsUGxheWJhY2tTZXNzaW9uSWQiOiI3NDNlYzgyNC00OTBlLTQ1ZDAtODNhMC05NDIwMDAxMzI5NGYifX0%3D
 - https://oregonstateuniversity-my.sharepoint.com/:v:/r/personal/rosencon_oregonstate_edu/Documents/Attachments/PXL_20250609_203106960.mp4?csf=1&web=1&e=AGnGCI&nav=eyJwbGF5YmFja09wdGlvbnMiOnt9LCJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbE1vZGUiOiJtaXMiLCJyZWZlcnJhbFZpZXciOiJwb3N0cm9sbC1jb3B5bGluayIsInJlZmVycmFsUGxheWJhY2tTZXNzaW9uSWQiOiJhODQwMWE3MS1jODI4LTQ1MTItOWQ1MS0wMjNhZjQ0ZTE0MTEifX0%3D
 
-## Final Results
+## Completed_Videos
 - https://oregonstateuniversity-my.sharepoint.com/:v:/r/personal/rosencon_oregonstate_edu/Documents/Attachments/PXL_20250609_205245309.mp4?csf=1&web=1&e=FG9Jtm&nav=eyJwbGF5YmFja09wdGlvbnMiOnt9LCJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbE1vZGUiOiJtaXMiLCJyZWZlcnJhbFZpZXciOiJwb3N0cm9sbC1jb3B5bGluayIsInJlZmVycmFsUGxheWJhY2tTZXNzaW9uSWQiOiIxNTYzYzQwNS1hMzljLTQ2MmYtOTc1MC0yMmQ1NzYyM2E5ZmQifX0%3D
 - https://oregonstateuniversity-my.sharepoint.com/:v:/r/personal/rosencon_oregonstate_edu/Documents/Attachments/PXL_20250609_202801648.mp4?csf=1&web=1&e=P8FL6E&nav=eyJwbGF5YmFja09wdGlvbnMiOnt9LCJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbE1vZGUiOiJtaXMiLCJyZWZlcnJhbFZpZXciOiJwb3N0cm9sbC1jb3B5bGluayIsInJlZmVycmFsUGxheWJhY2tTZXNzaW9uSWQiOiI4ODNhM2MwMy1mYjRlLTQyM2QtYjBjNi01M2Q0MmYyY2EwY2MifX0%3D
 - https://oregonstateuniversity-my.sharepoint.com/:v:/r/personal/rosencon_oregonstate_edu/Documents/Attachments/PXL_20250609_204949665.mp4?csf=1&web=1&e=HbA6Ku&nav=eyJwbGF5YmFja09wdGlvbnMiOnt9LCJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbE1vZGUiOiJtaXMiLCJyZWZlcnJhbFZpZXciOiJwb3N0cm9sbC1jb3B5bGluayIsInJlZmVycmFsUGxheWJhY2tTZXNzaW9uSWQiOiJjYzYxMGFiYS02MTUxLTQ2ODQtOTA2NS02NjY1YWUxZDE2YzcifX0%3D
@@ -83,22 +86,23 @@ NOTES: Overall the code woorks to test and simulate positions using the Trimesh 
 - Utilizes up to 21 servos to replicate human joints and allow the robot to replicate human motion
 
 # Installation
+Assemble Logitech c920e camera and combine it with the camera cover and assemble it on top of the robot
+![ROB 421 Camera Cover](https://github.com/user-attachments/assets/54dae5ec-9daf-4654-a498-82130094df02)
+![ROB 421 Image with camera cover](https://github.com/user-attachments/assets/3d3b0560-cb87-4f55-b18c-502a5b80ded2)
 
-
-# Usage
   
 ## Captions/Speakers/Video/Microphone
-- Current camera model for project is Logitech c923E
+- Current camera model for project is Logitech c920e
 - Currently uses hooked up computers speakers for sound and audio
 
 ### Configuration
 -  3D tracking
 -  Accurate Angle and servo determination
-  - move human like bending of the arms, biceps and shoulders should not bend in non human ways when copying
+  - more human like bending of the arms, biceps and shoulders. It should not bend in non human ways when copying movement
 -  Safe and reasonable servo movement
 -  Collision prediction and prevention
   
-# Contributing
+# Contributing 
 
 ### System Requirements
 - Must be on Python ver. 3.11
@@ -107,7 +111,5 @@ NOTES: Overall the code woorks to test and simulate positions using the Trimesh 
   - mediapipe: 0.10.21
   - numpy: 1.26.4
   - opencv: 4.11.0.86
+  - DeepFace 
 
-
-
-# License
