@@ -1,0 +1,51 @@
+{
+    "Name": "BowToUser",
+    "Keyframes": [
+      {
+        "HasEmote": "True",
+        "HasAudio": "False",
+        "AudioClip": "intro",
+        "HasJoints": "True",
+        "Expression": "Happy",
+        "WaitTime": 2500,
+        "JointMoveTime": 2,
+        "JointAngles": [
+          {
+            "Joint": "TorsoBow",
+            "Angle": 125
+          }
+          
+        ]
+      },
+      {
+        "HasEmote": "True",
+        "HasAudio": "False",
+        "HasJoints": "True",
+        "Expression": "Happy",
+        "WaitTime": 2500,
+        "JointMoveTime": 2,
+        "JointAngles": [
+          {
+            "Joint": "TorsoBow",
+            "Angle": 100
+          }
+          
+        ]
+      },
+      {
+        "HasEmote": "True",
+        "HasAudio": "False",
+        "HasJoints": "True",
+        "Expression": "Happy",
+        "WaitTime": 2500,
+        "JointMoveTime": 2,
+        "JointAngles": [
+          {
+            "Joint": "TorsoBow",
+            "Angle": 125
+          }
+          
+        ]
+      }
+    ]
+  }
