@@ -19,6 +19,9 @@
 - Project Mirror Master is a project designed, and created by engineering students at Oregon State University for the Applied Robotics class (ROB 421), that would take a completely assembled and functioning Social Animated Mechanical Interlocutor (aka SAMI) robot currently used at oregon state for research, and would allow the user to install some modifications and a camera to allow the robot to be able to mirror the movements that would be performed right in front of it
 - This repository contains all relevant documentation and visual images needed to transform the SAMI robot into Project: Mirror Master
 
+## Reasoning:
+- We decided on attempting this project as we had already added a camera to our SAMI Robot and thought that it would be difficult and interesting to attempt to have the robot copy movements, which none of us hav ever done before. With our goal to get it to copy in 2, or even 3 dimensions. However our final Project: Mirror Master is only able to function in a 2 dimensional space.
+
 - [Add Initial video showing finished robot and movement]
 
 # Features
@@ -35,9 +38,8 @@ https://github.com/user-attachments/assets/5335354e-1cad-4e65-9cfb-70e90b637bce
   - Isolates single user and only mirrors that user:
   - Checks to see if it is an authorized user, only then it would copy movements
   - Would look register the emotion of the user and attempt to overwrite the current expression on the robot
-  [Zip files for working videos][Rob 421 Final Project Andrew Dillon Individual Artefacts (2).zip](https://github.com/user-attachments/files/20701953/Rob.421.Final.Project.Andrew.Dillon.Individual.Artefacts.2.zip) 
-[Rob 421 Final Project Andrew Dillon Individual Artefacts Part 2.zip](https://github.com/user-attachments/files/20701964/Rob.421.Final.Project.Andrew.Dillon.Individual.Artefacts.Part.2.zip)
-
+  - [Zip files for working videos][Rob 421 Final Project Andrew Dillon Individual Artefacts (2).zip](https://github.com/user-attachments/files/20701953/Rob.421.Final.Project.Andrew.Dillon.Individual.Artefacts.2.zip)
+  - [Rob 421 Final Project Andrew Dillon Individual Artefacts Part 2.zip](https://github.com/user-attachments/files/20701964/Rob.421.Final.Project.Andrew.Dillon.Individual.Artefacts.Part.2.zip)
 
 
 - Conor Rozenberger's and Andrew Hiser's Artefacts:
