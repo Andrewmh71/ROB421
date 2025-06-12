@@ -7,13 +7,14 @@
 - [Beginning steps](#initial_test_videos)
 - [End Result](#Completed_Videos)
 - [Features & Artefacts](#features)
+  - [Miguel Gaspar Garcia's Artefacts](#Miguel-Garcia's-Artefacts)
+  - [Andrew Dillon's Artefacts](#Andrew-Dillon's-Artefacts)
+  - [Connor's Rosenberger And Andrew Hiser's Artefacts ](#Conor-Rosenberger's-and-Andrew-Hiser's-Artefacts)
+  - [Daniel McVay's Artefacts](#Daniel-McVay's-Artefacts)
 - [Installation](#installation)
-- [Usage](#usage)
-  - [Basic Example in 2D](#basic-example)
-  - [Advanced Example in 3D](#advanced-example)
 - [Configuration](#configuration)
 - [API Reference](#api-reference)
-- [Contributing](#contributing)
+
 
 
 
@@ -58,7 +59,7 @@ https://github.com/user-attachments/assets/5335354e-1cad-4e65-9cfb-70e90b637bce
   - [Rob 421 Final Project Andrew Dillon Individual Artefacts Part 2.zip](https://github.com/user-attachments/files/20701964/Rob.421.Final.Project.Andrew.Dillon.Individual.Artefacts.Part.2.zip)
 
 
-- Conor Rozenberger's and Andrew Hiser's Artefacts:
+- Conor Rosenberger's and Andrew Hiser's Artefacts:
   - Large Focus on 2D and later 3D Motion
   - Artifact 1) 2D skeleton pose estimation and collision detection and prevention
   - Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
@@ -92,7 +93,7 @@ Assemble Logitech c920e camera and combine it with the camera cover and assemble
 
   
 ## Captions/Speakers/Video/Microphone
-- Current camera model for project is Logitech c920e
+- Current camera model for project is a Logitech c920e camera
 - Currently uses hooked up computers speakers for sound and audio
 
 ### Configuration
@@ -102,14 +103,13 @@ Assemble Logitech c920e camera and combine it with the camera cover and assemble
 -  Safe and reasonable servo movement
 -  Collision prediction and prevention
   
-# Contributing 
 
-### System Requirements
+# System Requirements
 - Must be on Python ver. 3.11
   - one of the few versions that would work with mediapipe and DeepFace
 - Python Module Version:
   - mediapipe: 0.10.21
   - numpy: 1.26.4
   - opencv: 4.11.0.86
-  - DeepFace 
+  - DeepFace https://github.com/serengil/deepface 
 
