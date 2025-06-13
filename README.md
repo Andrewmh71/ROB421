@@ -20,7 +20,7 @@
 
 
 # Introduction
-- Project Mirror Master is a project designed, and created by Andrew Dillon, Andrew Hiser, Miguel Garcia Garspa, Daniel McVay, and Connor Rosenberger, who car currently students at Oregon State University for the Applied Robotics class (ROB 421), that would take a completely assembled and functioning Social Animated Mechanical Interlocutor (aka SAMI) robot currently used at oregon state for research, and would allow the user to install some modifications and a camera to allow the robot to be able to mirror the movements that would be performed right in front of it
+- Project Mirror Master is a project designed, and created by Andrew Dillon, Andrew Hiser, Miguel Garcia Garspa, Daniel McVay, and Conor Rosenberger, who are currently students at Oregon State University in the Applied Robotics class (ROB 421), that would take a completely assembled and functioning Social Animated Mechanical Interlocutor (aka SAMI) robot currently used at oregon state for research, and would allow the user to install some modifications and a camera to allow the robot to be able to mirror the movements that would be performed right in front of it
 - This repository contains all relevant documentation and visual images needed to transform the SAMI robot into Project: Mirror Master
 
 ## Reasoning:
