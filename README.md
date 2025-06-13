@@ -6,11 +6,11 @@
 - [Reasoning](#reasoning)
 - [Beginning steps](#initial_test_videos)
 - [End Result](#Completed_Videos)
-- [Features & Artefacts](#features)
-  - [Miguel Gaspar Garcia's Artefacts](#Miguel-Garcia's-Artefacts)
-  - [Andrew Dillon's Artefacts](#Andrew-Dillon's-Artefacts)
-  - [Connor's Rosenberger And Andrew Hiser's Artefacts ](#Conor-Rosenberger's-and-Andrew-Hiser's-Artefacts)
-  - [Daniel McVay's Artefacts](#Daniel-McVay's-Artefacts)
+- [Features & Artifacts](#features)
+  - [Miguel Gaspar Garcia's Artifacts](#Miguel-Garcia's-Artifacts)
+  - [Andrew Dillon's Artifacts](#Andrew-Dillon's-Artifacts)
+  - [Connor's Rosenberger And Andrew Hiser's Artifacts ](#Conor-Rosenberger's-and-Andrew-Hiser's-Artifacts)
+  - [Daniel McVay's Artifacts](#Daniel-McVay's-Artifacts)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [API Reference](#api-reference)
@@ -42,24 +42,24 @@
 
 
 # Features
-## Supplemental Artefacts:
-- Miguel Garcia's Artefacts
+## Supplemental Artifacts:
+- Miguel Garcia's Artifacts
     -  Gimbal tracking of the head in order to track user if they step out of view
     -  [Add tracking video]
 
 https://github.com/user-attachments/assets/5335354e-1cad-4e65-9cfb-70e90b637bce
 
 
-- Andrew Dillon's Artefacts:
+- Andrew Dillon's Artifacts:
   - Focus of facial recognition aspects of the movement
   - Isolates single user and only mirrors that user:
   - Checks to see if it is an authorized user, only then it would copy movements
   - Would look register the emotion of the user and attempt to overwrite the current expression on the robot
-  - [Zip files for working videos][Rob 421 Final Project Andrew Dillon Individual Artefacts (2).zip](https://github.com/user-attachments/files/20701953/Rob.421.Final.Project.Andrew.Dillon.Individual.Artefacts.2.zip)
-  - [Rob 421 Final Project Andrew Dillon Individual Artefacts Part 2.zip](https://github.com/user-attachments/files/20701964/Rob.421.Final.Project.Andrew.Dillon.Individual.Artefacts.Part.2.zip)
+  - [Zip files for working videos][Rob 421 Final Project Andrew Dillon Individual Artifacts (2).zip](https://github.com/user-attachments/files/20701953/Rob.421.Final.Project.Andrew.Dillon.Individual.Artifacts.2.zip)
+  - [Rob 421 Final Project Andrew Dillon Individual Artifacts Part 2.zip](https://github.com/user-attachments/files/20701964/Rob.421.Final.Project.Andrew.Dillon.Individual.Artifacts.Part.2.zip)
 
 
-- Conor Rosenberger's and Andrew Hiser's Artefacts:
+- Conor Rosenberger's and Andrew Hiser's Artifacts:
   - Large Focus on 2D and later 3D Motion
   - Artifact 1) 2D skeleton pose estimation and collision detection and prevention
   - Artifact 2) Modified Json behavior file to allow robot to make "Show Sky" Gesture
@@ -67,7 +67,7 @@ https://github.com/user-attachments/assets/5335354e-1cad-4e65-9cfb-70e90b637bce
   - Video of TEST 3D motion angle determination: https://github.com/user-attachments/assets/0f409fa8-7e65-4dfb-aff2-d3c45caf36b4
   - Designed a headshell to mask a Logitech 923E camera to soften the appearance of the robot and camera [camerashellfinalfinalfinalfinalfinal.zip](https://github.com/user-attachments/files/20702064/camerashellfinalfinalfinalfinalfinal.zip)
     
--Daniel McVay's Artefacts:
+-Daniel McVay's Artifacts:
   - Create collision detection for system to determine if a motion is safe to mirror
   - Artifact 1) created code for identification of both shoulders and elbow to initialize system
   - Artifact 2) created code that simulates the arms position and checks for the collision {image below}
