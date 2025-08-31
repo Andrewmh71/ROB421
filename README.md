@@ -45,7 +45,7 @@
 ## Supplemental Artifacts:
 - Miguel Garcia's Artifacts
     -  Gimbal tracking of the head in order to track user if they step out of view
-    -  [Add tracking video]
+
 
 https://github.com/user-attachments/assets/5335354e-1cad-4e65-9cfb-70e90b637bce
 
